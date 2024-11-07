@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
-using SDKSimpleFactura.Helpers;
 using SDKSimpleFactura.Models.Facturacion;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
@@ -20,7 +19,7 @@ namespace AplicacionPruebas
             var clienteApi = new ClientApi(username, password);
             var Facturacion = clienteApi.Facturacion;
 
-            // Crear la solicitud
+            //prueba dte
             var solicitud = new SolicitudDte
             {
                 Credenciales = new Credenciales
@@ -34,7 +33,6 @@ namespace AplicacionPruebas
                     Ambiente = 0
                 }
             };
-            //prueba dte
             try
             {
                 var respuesta = await Facturacion.ObtenerDteAsync(solicitud);
@@ -69,9 +67,10 @@ namespace AplicacionPruebas
                     Ambiente = 0
                 }
             };
+            TipoSobreEnvio tipoSobre = 0;
             try
             {
-                var pdfBytes = await Facturacion.ObtenerSobreXmlDteAsync(solicitudSobreXML);
+                var pdfBytes = await Facturacion.ObtenerSobreXmlDteAsync(solicitudSobreXML, tipoSobre);
 
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\sobrexmldte.xml";
                 System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
@@ -150,9 +149,10 @@ namespace AplicacionPruebas
                 Observaciones = "NOTA AL PIE DE PAGINA",
                 TipoPago = "30 dias"
             };
+            string sucursal = "Casa_Matriz";
             try
             {
-                var result = await Facturacion.FacturacionIndividualV2DTE(documento);
+                var result = await Facturacion.FacturacionIndividualV2DTEAsync(sucursal, documento);
                 if (result.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -245,7 +245,7 @@ namespace AplicacionPruebas
             };
             try
             {
-                var resultBoleta = await Facturacion.FacturacionIndividualV2DTE(documentoBoleta);
+                var resultBoleta = await Facturacion.FacturacionIndividualV2DTEAsync(sucursal, documentoBoleta);
                 if (resultBoleta.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -376,9 +376,10 @@ namespace AplicacionPruebas
                 },
                 Observaciones = "NOTA AL PIE DE PAGINA"
             };
+            string sucursalExportacion = "Casa Matriz";
             try
             {
-                var resultBoleta = await Facturacion.FacturacionIndividualV2Exportacion(exportacion);
+                var resultBoleta = await Facturacion.FacturacionIndividualV2ExportacionAsync(sucursalExportacion, exportacion);
                 if (resultBoleta.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -395,7 +396,250 @@ namespace AplicacionPruebas
             {
                 Console.WriteLine($"Excepción: {ex.Message}");
             }
-            
+            //InvoiceMassive
+            var credenciales = new Credenciales
+            {
+                RutEmisor = "76269769-6",
+                NombreSucursal = "Casa Matriz",
+            };
+            string pathCsv = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\ejemplo_carga_masiva_nacional (2).csv";
+            try
+            {
+                var resultMassive = await Facturacion.FacturacionMasivaAsync(credenciales, pathCsv);
+                if (resultMassive.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(resultMassive.Message);
+                    Console.WriteLine($"Data: {resultMassive.Data}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {resultMassive.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //EmisionNC-NDV2
+            var documentoNC = new RequestDTE
+            {
+                Documento = new Documento
+                {
+                    Encabezado = new Encabezado
+                    {
+                        IdDoc = new IdentificacionDTE
+                        {
+                            TipoDTE = (DTEType)56,
+                            FchEmis = DateTime.Parse("2024-08-13"),
+                            FmaPago = (FormaPagoEnum)2,
+                            FchVenc = DateTime.Parse("2024-09-12")
+                        },
+                        Emisor = new Emisor
+                        {
+                            RUTEmisor = "76269769-6",
+                            RznSoc = "SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                            GiroEmis = "Desarrollo de software",
+                            Telefono = new List<string> { "912345678" },
+                            CorreoEmisor = "felipe.anzola@erke.cl",
+                            Acteco = new List<int> { 620900 },
+                            DirOrigen = "Chile",
+                            CmnaOrigen = "Chile",
+                            CiudadOrigen = "Chile"
+                        },
+                        Receptor = new Receptor
+                        {
+                            RUTRecep = "77225200-5",
+                            RznSocRecep = "ARRENDADORA DE VEHÍCULOS S.A.",
+                            GiroRecep = "451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
+                            CorreoRecep = "terceros-77225200@dte.iconstruye.com",
+                            DirRecep = "Rondizzoni 2130",
+                            CmnaRecep = "SANTIAGO",
+                            CiudadRecep = "SANTIAGO"
+                        },
+                        Totales = new Totales
+                        {
+                            MntNeto = 6930000.0,
+                            TasaIVA = 19,
+                            IVA = 1316700,
+                            MntTotal = 8246700.0
+                        }
+                    },
+                    Detalle = new List<Detalle>
+                    {
+                        new Detalle
+                        {
+                            NroLinDet = 1,
+                            NmbItem = "CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
+                            CdgItem = new List<CodigoItem>
+                            {
+                                new CodigoItem
+                                {
+                                    TpoCodigo = "4",
+                                    VlrCodigo = "EVO_2"
+                                }
+                            },
+                            QtyItem = 42.0,
+                            UnmdItem = "unid",
+                            PrcItem = 319166.0,
+                            MontoItem = 6930000
+                        }
+                    },
+                    Referencia = new List<Referencia>
+                    {
+                        new Referencia
+                        {
+                            NroLinRef = 1,
+                            TpoDocRef = "61",
+                            FolioRef = "1268",
+                            FchRef = DateTime.Parse("2024-10-17"),
+                            CodRef = (TipoReferencia.TipoReferenciaEnum)1,
+                            RazonRef = "Anular"
+                        }
+                    }
+                }
+            };
+            ReasonTypeEnum motivo = (ReasonTypeEnum)6;
+            try
+            {
+                var resultNC = await Facturacion.EmisionNC_NDV2Async(sucursal, motivo, documentoNC);
+                if (resultNC.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(resultNC.Message);
+                    Console.WriteLine($"Data: {resultNC.Data.TipoDTE}, folio: {resultNC.Data.Folio}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {resultNC.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ListadoDte
+            var listadoRequest = new ListaDteRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "10422710-4",
+                    NombreSucursal = "Casa Matriz"
+                },
+                Ambiente = 0,
+                Folio = 0,
+                CodigoTipoDte = 0,
+                Desde = DateTime.Parse("2024-08-01"),
+                Hasta = DateTime.Parse("2024-08-17")
+            };
+            try
+            {
+                var listado = await Facturacion.ListadoDtesEmitidosAsync(listadoRequest);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data.First().TipoDte}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //EnvioMail
+            var envioMailRequest = new EnvioMailRequest
+            {
+                RutEmpresa = "76269769-6",
+                Dte = new EnvioMailRequest.DteClass
+                {
+                    folio = 2149,
+                    tipoDTE = 33
+                },
+                Mail = new EnvioMailRequest.MailClass
+                {
+                    to = new List<string> { "contacto@chilesystems.com" },
+                    ccos = new List<string> { "correo@gmail.com" },
+                    ccs = new List<string> { "correo2@gmail.com" }
+                },
+                Xml = true,
+                Pdf = true,
+                Comments = "ESTO ES UN COMENTARIO"
+            };
+            try
+            {
+                var mailresponse = await Facturacion.EnvioMailAsync(envioMailRequest);
+                if (mailresponse.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(mailresponse.Message);
+                    Console.WriteLine($"Data: {mailresponse.Data}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {mailresponse.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //Consolidado de ventas
+            var listadoRequestConsolidado = new ListaDteRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6"
+                },
+                Ambiente = 0,
+                Desde = DateTime.Parse("2023-10-25"),
+                Hasta = DateTime.Parse("2023-10-30")
+            };
+            try
+            {
+                var listado = await Facturacion.ConsolidadoVentas(listadoRequestConsolidado);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data.First().TiposDTE}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //Conciliar Emitidos
+            var credencialesConsolidado = new Credenciales
+            {
+                RutEmisor = "76269769-6"
+            };
+            try
+            {
+                var listado = await Facturacion.ConsolidadoEmitidos(credencialesConsolidado, 5, 2024);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             Console.ReadLine();
         }
     }
