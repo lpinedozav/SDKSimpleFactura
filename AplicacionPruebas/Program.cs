@@ -2,6 +2,8 @@
 using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Models.Facturacion;
+using SDKSimpleFactura.Models.Productos;
+using SDKSimpleFactura.Services;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
 
@@ -18,7 +20,63 @@ namespace AplicacionPruebas
             // Crear instancia del cliente API
             var clienteApi = new ClientApi(username, password);
             var Facturacion = clienteApi.Facturacion;
+            var Productos = clienteApi.Productos;
+            //ObtenerPDF 
+            var solicitudPDF = new SolicitudDte
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                DteReferenciadoExterno = new DteReferenciadoExterno
+                {
+                    Folio = 4117,
+                    CodigoTipoDte = 33,
+                    Ambiente = 0
+                }
+            };
+            try
+            {
+                var pdfBytes = await Facturacion.ObtenerPdfDteAsync(solicitudPDF);
 
+                var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\dte.pdf";
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+
+                Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ObtenerTimbreDteAsync
+            var solicitudTimbre = new SolicitudDte
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                DteReferenciadoExterno = new DteReferenciadoExterno
+                {
+                    Folio = 4117,
+                    CodigoTipoDte = 33,
+                    Ambiente = 0
+                }
+            };
+            try
+            {
+                var timbrestring = await Facturacion.ObtenerTimbreDteAsync(solicitudPDF);
+                var timbreBytes = Convert.FromBase64String(timbrestring.Data);
+                var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\timbre.png";
+                System.IO.File.WriteAllBytes(rutaArchivo, timbreBytes);
+
+                Console.WriteLine($"El Timbre se ha descargado correctamente en: {rutaArchivo}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             //prueba dte
             var solicitud = new SolicitudDte
             {
@@ -48,6 +106,33 @@ namespace AplicacionPruebas
                 {
                     Console.WriteLine($"Error: {respuesta.Message}");
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //xml
+            var solicitudXml = new SolicitudDte
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                },
+                DteReferenciadoExterno = new DteReferenciadoExterno
+                {
+                    Folio = 12553,
+                    CodigoTipoDte = 39,
+                    Ambiente = 0
+                }
+            };
+            try
+            {
+                var xmlBytes = await Facturacion.ObtenerXmlDteAsync(solicitudXml);
+
+                var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\xmldte.xml";
+                System.IO.File.WriteAllBytes(rutaArchivo, xmlBytes);
+
+                Console.WriteLine($"El Xml se ha descargado correctamente en: {rutaArchivo}");
             }
             catch (Exception ex)
             {
@@ -630,6 +715,80 @@ namespace AplicacionPruebas
                     Console.WriteLine("entro al status 200");
                     Console.WriteLine(listado.Message);
                     Console.WriteLine($"Data: {listado.Data}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //AddProducts
+            var datoExternoRequest = new DatoExternoRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                Productos = new List<NuevoProductoExternoRequest>
+                    {
+                        new NuevoProductoExternoRequest
+                        {
+                            Nombre = "Goma 790",
+                            CodigoBarra = "goma790",
+                            UnidadMedida = "un",
+                            Precio = 50,
+                            Exento = false,
+                            TieneImpuestos = false,
+                            Impuestos = new List<int> { 0 }
+                        },
+                        new NuevoProductoExternoRequest
+                        {
+                            Nombre = "Goma 791",
+                            CodigoBarra = "goma791",
+                            UnidadMedida = "un",
+                            Precio = 50,
+                            Exento = false,
+                            TieneImpuestos = true,
+                            Impuestos = new List<int> { 271, 23 }
+                        }
+                    }
+            };
+            try
+            {
+                var listado = await Productos.AgregarProductos(datoExternoRequest);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data.First().Nombre}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ListProducts
+            var credencialesProductos = new Credenciales
+            {
+                RutEmisor = "76269769-6",
+                NombreSucursal = "Casa Matriz"
+            };
+            try
+            {
+                var listado = await Productos.ListarProductos(credencialesProductos);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data.First().Nombre}");
                 }
                 else
                 {

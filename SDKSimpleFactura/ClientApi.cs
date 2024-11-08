@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Services;
+﻿using SDKSimpleFactura.Services;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -29,8 +27,5 @@ namespace SDKSimpleFactura
             Facturacion = new FacturacionService(_httpClient);
             Productos = new ProductosService(_httpClient);
         }
-        
-
-
     }
 }
