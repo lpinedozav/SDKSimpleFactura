@@ -10,6 +10,7 @@ namespace SDKSimpleFactura
         public readonly string baseUrl;
         public FacturacionService Facturacion { get; }
         public ProductosService Productos { get; }
+        public ProveedoresService Proveedores { get; }
 
         public ClientApi(string username, string password)
         {
@@ -26,6 +27,7 @@ namespace SDKSimpleFactura
 
             Facturacion = new FacturacionService(_httpClient);
             Productos = new ProductosService(_httpClient);
+            Proveedores = new ProveedoresService(_httpClient);
         }
     }
 }

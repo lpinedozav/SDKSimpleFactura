@@ -1,13 +1,21 @@
-﻿
+﻿using SDKSimpleFactura.Models.Clientes;
+using SDKSimpleFactura.Models;
+using SDKSimpleFactura.Models.Productos;
+using SDKSimpleFactura.Models.Facturacion;
 namespace SDKSimpleFactura.Services
 {
-    public class ClientesService
+    public class ClientesService : BaseService
     {
-        public readonly HttpClient _httpClient;
-        public ClientesService(HttpClient httpClient)
+        public ClientesService(HttpClient httpClient) : base(httpClient) { }
+        public async Task<Response<ReceptorExternoEnt>> AgregarClientesAsync(DatoExternoRequest request)
         {
-            _httpClient = httpClient;
-
+            var url = "/addClients";
+            return await PostAsync<DatoExternoRequest, Response<ReceptorExternoEnt>>(url, request);
+        }
+        public async Task<Response<List<ReceptorExternoEnt>>> ListarClientes(Credenciales credenciales)
+        {
+            var url = "/clients";
+            return await PostAsync<Credenciales, Response<List<ReceptorExternoEnt>>>(url, credenciales);
         }
     }
 }

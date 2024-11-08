@@ -22,6 +22,7 @@ namespace AplicacionPruebas
             var clienteApi = new ClientApi(username, password);
             var Facturacion = clienteApi.Facturacion;
             var Productos = clienteApi.Productos;
+            var Proveedores = clienteApi.Proveedores;
             //ObtenerPDF 
             var solicitudPDF = new SolicitudDte
             {
@@ -738,8 +739,8 @@ namespace AplicacionPruebas
                     {
                         new NuevoProductoExternoRequest
                         {
-                            Nombre = "Goma 790",
-                            CodigoBarra = "goma790",
+                            Nombre = "Goma 792",
+                            CodigoBarra = "goma792",
                             UnidadMedida = "un",
                             Precio = 50,
                             Exento = false,
@@ -748,8 +749,8 @@ namespace AplicacionPruebas
                         },
                         new NuevoProductoExternoRequest
                         {
-                            Nombre = "Goma 791",
-                            CodigoBarra = "goma791",
+                            Nombre = "Goma 793",
+                            CodigoBarra = "goma793",
                             UnidadMedida = "un",
                             Precio = 50,
                             Exento = false,
@@ -809,14 +810,113 @@ namespace AplicacionPruebas
                     RutContribuyente = "76372100-0",
                 }
             };
+            //sin probar
             //ListadoDtesRecibidosAsync
-
+            var solicitudLista = new ListaDteRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6"
+                },
+                Ambiente = (Ambiente.AmbienteEnum)1,
+                Folio = null,
+                CodigoTipoDte = null,
+                Desde = DateTime.Parse("2024-04-01"),
+                Hasta = DateTime.Parse("2024-04-30")
+            };
+            try
+            {
+                var listado = await Proveedores.ListadoDtesRecibidosAsync(solicitudLista);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data.First().EstadoSII}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             //ObtenerXmlAsync
-
+            var solicitudXnlProveedores = new ListaDteRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "96689310-9"
+                },
+                Ambiente= (Ambiente.AmbienteEnum)1,
+                Folio = 7366834,
+                CodigoTipoDte = (DTEType)61
+            };
+            try
+            {
+                var listado = await Proveedores.ObtenerXmlAsync(solicitudXnlProveedores);
+                if (listado.Status == 200)
+                {
+                    Console.WriteLine("entro al status 200");
+                    Console.WriteLine(listado.Message);
+                    Console.WriteLine($"Data: {listado.Data}");
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {listado.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             //ObtenerPDFAsync
+            var solicitudObtenerPDF = new ListaDteRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "76269769-6"
+                },
+                Ambiente = (Ambiente.AmbienteEnum)0,
+                Folio = 2232,
+                CodigoTipoDte = (DTEType)33
+            };
+            try
+            {
+                var pdfBytes = await Proveedores.ObtenerPDFAsync(solicitudObtenerPDF);
+                var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\dteRecibido.pdf";
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
 
+                Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             //ConciliarRecibidosAsync
-
+            var credencialesProveedores = new Credenciales
+            {
+                RutEmisor = "76269769-6"
+            };
+            var mes = 5;
+            var anio = 2024;
+            try
+            {
+                var response = await Proveedores.ConciliarRecibidosAsync(credencialesProveedores, mes, anio);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             Console.ReadLine();
         }
     }
