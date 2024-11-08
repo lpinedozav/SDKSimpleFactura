@@ -1,12 +1,6 @@
 ﻿using SDKSimpleFactura.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SDKSimpleFactura.Enum.Ambiente;
 using static SDKSimpleFactura.Enum.TipoDTE;
-using static SDKSimpleFactura.Enum.TipoSalida;
 
 
 namespace SDKSimpleFactura.Models.Facturacion

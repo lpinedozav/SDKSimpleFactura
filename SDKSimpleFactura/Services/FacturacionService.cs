@@ -81,12 +81,12 @@ namespace SDKSimpleFactura.Services
             var url = "/dte/enviar/mail";
             return await PostAsync<EnvioMailRequest, Response<bool>>(url,request);
         }
-        public async Task<Response<List<ReporteDTE>>> ConsolidadoVentas(ListaDteRequest request)
+        public async Task<Response<List<ReporteDTE>>> ConsolidadoVentasAsync(ListaDteRequest request)
         {
             var url = "/dte/consolidated/issued";
             return await PostAsync<ListaDteRequest, Response<List<ReporteDTE>>>(url, request);
         }
-        public async Task<Response<string>> ConsolidadoEmitidos(Credenciales credenciales, int mes, int anio)
+        public async Task<Response<string>> ConsolidadoEmitidosAsync(Credenciales credenciales, int mes, int anio)
         {
             var url = $"/documentsIssued/consolidate/{mes}/{anio}";
             return await PostAsync<Credenciales, Response<string>>(url, credenciales);

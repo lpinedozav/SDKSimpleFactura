@@ -3,6 +3,7 @@ using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Productos;
+using SDKSimpleFactura.Models.Proveedores;
 using SDKSimpleFactura.Services;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
@@ -686,7 +687,7 @@ namespace AplicacionPruebas
             };
             try
             {
-                var listado = await Facturacion.ConsolidadoVentas(listadoRequestConsolidado);
+                var listado = await Facturacion.ConsolidadoVentasAsync(listadoRequestConsolidado);
                 if (listado.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -709,7 +710,7 @@ namespace AplicacionPruebas
             };
             try
             {
-                var listado = await Facturacion.ConsolidadoEmitidos(credencialesConsolidado, 5, 2024);
+                var listado = await Facturacion.ConsolidadoEmitidosAsync(credencialesConsolidado, 5, 2024);
                 if (listado.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -759,7 +760,7 @@ namespace AplicacionPruebas
             };
             try
             {
-                var listado = await Productos.AgregarProductos(datoExternoRequest);
+                var listado = await Productos.AgregarProductosAsync(datoExternoRequest);
                 if (listado.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -783,7 +784,7 @@ namespace AplicacionPruebas
             };
             try
             {
-                var listado = await Productos.ListarProductos(credencialesProductos);
+                var listado = await Productos.ListarProductosAsync(credencialesProductos);
                 if (listado.Status == 200)
                 {
                     Console.WriteLine("entro al status 200");
@@ -799,6 +800,23 @@ namespace AplicacionPruebas
             {
                 Console.WriteLine($"Excepción: {ex.Message}");
             }
+            //AcuseReciboAsync
+            var acuseRequest = new AcuseReciboExternoRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "76372100-0",
+                }
+            };
+            //ListadoDtesRecibidosAsync
+
+            //ObtenerXmlAsync
+
+            //ObtenerPDFAsync
+
+            //ConciliarRecibidosAsync
+
             Console.ReadLine();
         }
     }
