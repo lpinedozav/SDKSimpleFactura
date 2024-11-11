@@ -5,71 +5,59 @@ namespace SDKSimpleFactura.Enum
 {
     public class TipoDTE
     {
-        public enum DTEFoliosType : int
-        {
-            /// <summary>
-            /// No se ha asignado un valor aún.
-            /// </summary>
-            [XmlEnum("")]
-            NotSet = 0,
-            [XmlEnum("33")]
-            FacturaElectronica = 33,
-            [XmlEnum("34")]
-            FacturaElectronicaExenta = 34,
-            [XmlEnum("46")]
-            FacturaCompraElectronica = 46,
-            [XmlEnum("110")]
-            FacturaExportacionElectronica = 110,
-            [XmlEnum("112")]
-            NotaCreditoExportacionElectronica = 112,
-            [XmlEnum("111")]
-            NotaDebitoExportacionElectronica = 111,
-            [XmlEnum("52")]
-            GuiaDespachoElectronica = 52,
-            [XmlEnum("56")]
-            NotaDebitoElectronica = 56,
-            [XmlEnum("61")]
-            NotaCreditoElectronica = 61,
-            [XmlEnum("39")]
-            BoletaElectronica = 39,
-            [XmlEnum("41")]
-            BoletaElectronicaExenta = 41
-        }
         public enum DTEType : int
         {
             /// <summary>
             /// No se ha asignado un valor aún.
             /// </summary>
+            [Description("No Asignado")]
             [XmlEnum("")]
             NotSet = 0,
+            [Description("Factura")]
             [XmlEnum("30")]
             Factura = 30,
+            [Description("Factura Exenta")]
             [XmlEnum("32")]
             FacturaExenta = 32,
+            [Description("Factura Electrónica")]
             [XmlEnum("33")]
-            FacturaElectronica = 33,   
+            FacturaElectronica = 33,
+            [Description("Factura Electrónica Exenta")]
             [XmlEnum("34")]
             FacturaElectronicaExenta = 34,
+            [Description("Factura Compra Electrónica")]
             [XmlEnum("46")]
             FacturaCompraElectronica = 46,
+            [Description("Factura Exportación Electrónica")]
             [XmlEnum("110")]
             FacturaExportacionElectronica = 110,
+            [Description("Nota Credito Exportación Electrónica")]
             [XmlEnum("112")]
             NotaCreditoExportacionElectronica = 112,
+            [Description("Nota Debito Exportación Electrónica")]
             [XmlEnum("111")]
             NotaDebitoExportacionElectronica = 111,
+            [Description("Guia Despacho Electrónica")]
             [XmlEnum("52")]
             GuiaDespachoElectronica = 52,
+            [Description("Nota Debito Electrónica")]
             [XmlEnum("56")]
             NotaDebitoElectronica = 56,
+            [Description("Nota Credito")]
             [XmlEnum("60")]
             NotaCredito = 60,
+            [Description("Nota Credito Electrónica")]
             [XmlEnum("61")]
             NotaCreditoElectronica = 61,
+            [Description("Boleta Electrónica")]
             [XmlEnum("39")]
             BoletaElectronica = 39,
+            [Description("Boleta Exenta Electrónica")]
             [XmlEnum("41")]
-            BoletaElectronicaExenta = 41
+            BoletaElectronicaExenta = 41,
+            [Description("Liquidación Factura Electrónica")]
+            [XmlEnum("43")]
+            LiquidacionFacturaElectronica = 43
         }
         public enum DOCType : int
         {
@@ -91,7 +79,7 @@ namespace SDKSimpleFactura.Enum
             [XmlEnum("61")]
             NotaCreditoElectronica = 61
         }
-        public enum DTEFacturasType : int 
+        public enum DTEFacturasType : int
         {
             /// <summary>
             /// No se ha asignado un valor aún.
@@ -107,7 +95,6 @@ namespace SDKSimpleFactura.Enum
             [XmlEnum("43")]
             LiquidacionFacturaElectronica = 43
         }
-
         public enum TipoDocumentoLibro : int
         {
             /// <summary>
@@ -360,6 +347,5 @@ namespace SDKSimpleFactura.Enum
             [XmlEnum("501")]
             AjusteDisminucionTipoCambio = 501
         }
-
     }
 }

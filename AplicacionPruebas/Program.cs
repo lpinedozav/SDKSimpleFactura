@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
+using SDKSimpleFactura.Models.BoletasHonorarios;
+using SDKSimpleFactura.Models.Clientes;
 using SDKSimpleFactura.Models.Facturacion;
+using SDKSimpleFactura.Models.Folios;
 using SDKSimpleFactura.Models.Productos;
 using SDKSimpleFactura.Models.Proveedores;
 using SDKSimpleFactura.Services;
@@ -18,11 +21,16 @@ namespace AplicacionPruebas
             string username = "demo@chilesystems.com";
             string password = "Rv8Il4eV";
 
-            // Crear instancia del cliente API
+            // Crear instancias del cliente API
             var clienteApi = new ClientApi(username, password);
             var Facturacion = clienteApi.Facturacion;
             var Productos = clienteApi.Productos;
             var Proveedores = clienteApi.Proveedores;
+            var Clientes = clienteApi.Clientes;
+            var Sucursal = clienteApi.Sucursal;
+            var Folio = clienteApi.Folio;
+            var Configuracion = clienteApi.Configuracion;
+            var BoletasHonorarios = clienteApi.BoletasHonorariosService;
             //ObtenerPDF 
             var solicitudPDF = new SolicitudDte
             {
@@ -911,6 +919,323 @@ namespace AplicacionPruebas
                 {
                     Console.WriteLine("entro status 200");
                     Console.WriteLine(response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //AddClients
+            var datoExternoRequestClientes = new DatoExternoRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Matriz"
+                },
+                Clientes = new List<NuevoReceptorExternoRequest>
+                {
+                    new NuevoReceptorExternoRequest
+                    {
+                        Rut = "57681892-0",
+                        RazonSocial = "Cliente Test 1",
+                        Giro = "Giro 1",
+                        DirPart = "direccion 1",
+                        DirFact = "direccion 1",
+                        CorreoPar = "correo 1",
+                        CorreoFact = "correo 1",
+                        Ciudad = "Ciudad 1",
+                        Comuna = "Comuna 1"
+                    },
+                    new NuevoReceptorExternoRequest
+                    {
+                        Rut = "56516677-8",
+                        RazonSocial = "Cliente Test 2",
+                        Giro = "Giro 2",
+                        DirPart = "direccion 2",
+                        DirFact = "direccion 2",
+                        CorreoPar = "correo 2",
+                        CorreoFact = "correo 2",
+                        Ciudad = "Ciudad 2",
+                        Comuna = "Comuna 2"
+                    },
+                    new NuevoReceptorExternoRequest
+                    {
+                        Rut = "68959276-7",
+                        RazonSocial = "Cliente Test 3",
+                        Giro = "Giro 3",
+                        DirPart = "direccion 3",
+                        DirFact = "direccion 3",
+                        CorreoPar = "correo 3",
+                        CorreoFact = "correo 3",
+                        Ciudad = "Ciudad 3",
+                        Comuna = "Comuna 3"
+                    }
+                },
+            };
+            try
+            {
+                var response = await Clientes.AgregarClientesAsync(datoExternoRequestClientes);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //listclients
+            var solicitudClientes = new Credenciales
+            {
+                RutEmisor = "76269769-6"
+            };
+            try
+            {
+                var response = await Clientes.ListarClientesAsync(solicitudClientes);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.First().RazonSocial);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //listar sucursal
+            var credencialSucursal = new Credenciales
+            {
+                RutEmisor = "76269769-6"
+            };
+            try
+            {
+                var response = await Sucursal.ListadoSucursalesAsync(credencialSucursal);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.First().Direccion);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //consulta folios disnponibles
+            var solicitudCFD = new SolicitudFoliosRequest
+            {
+                RutEmpresa = "76269769-6",
+                 TipoDTE = 33,
+                 Ambiente = 0
+            };
+            try
+            {
+                var response = await Folio.ConsultaFoliosDisponiblesAsync(solicitudCFD);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //Solicitar folios
+            var solicitudSF = new FolioRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                Cantidad = 20,
+                CodigoTipoDte = (DTEType)33
+            };
+            try
+            {
+                var response = await Folio.SolicitarFoliosAsync(solicitudSF);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data?.TipoDte);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //consultar folios
+            var solicitudCF = new FolioRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                CodigoTipoDte = null,
+                Ambiente = 0
+            };
+            try
+            {
+                var response = await Folio.ConsultarFoliosAsync(solicitudCF);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.First().CodigoSii);
+                    Console.WriteLine(response.Data.First().FechaIngreso);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //folios sin uso
+            var solicitudFSU = new SolicitudFoliosRequest
+            {
+                RutEmpresa = "76269769-6",
+                TipoDTE = 33,
+                Ambiente = 0
+            };
+            try
+            {
+                var response = await Folio.FoliosSinUsoAsync(solicitudFSU);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.First().Desde);
+                    Console.WriteLine(response.Data.First().Hasta);
+                    Console.WriteLine(response.Data.First().Cantidad);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //datoe mpresa
+            var solicitudDE = new Credenciales
+            {
+                RutEmisor = "76269769-6"
+            };
+            try
+            {
+                var response = await Configuracion.DatosEmpresaAsync(solicitudDE);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.Rut);
+                    Console.WriteLine(response.Data.RazonSocial);
+                    Console.WriteLine(response.Data.Giro);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ObtenerPDFBHEEMITIDAS
+            var solicitudBHEPDF = new BHERequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6"
+                },
+                Folio = 15
+            };
+            try
+            {
+                var pdfBytes = await BoletasHonorarios.ObtenerPDFBHEEmitidaAsync(solicitudBHEPDF);
+
+                var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\bhe.pdf";
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+
+                Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ListadoBHEEmitidos
+            var solicitudLBHE = new ListaBHERequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                Folio = null,
+                Desde = DateTime.Parse("2024-09-03"),
+                Hasta = DateTime.Parse("2024-11-11")
+            };
+            try
+            {
+                var response = await BoletasHonorarios.ListadoBHEEmitidasAsync(solicitudLBHE);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.First().Emisor.RazonSocial);
+                    Console.WriteLine(response.Data.First().FechaEmision);
+                    Console.WriteLine(response.Data.First().Estado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ObtenerpDFBHERecibidas
+            var solicitudBHERPDF = new BHERequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "26429782-6"
+                },
+                Folio = 2
+            };
+            try
+            {
+                var pdfBytes = await BoletasHonorarios.ObtenerPDFBHERecibidosAsync(solicitudBHERPDF);
+
+                var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\bheCARLOS.pdf";
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+
+                Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
+            //ListadoBHERecibidas
+            var solicitudLBHER = new ListaBHERequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                Folio = null,
+                Desde = DateTime.Parse("2024-09-03"),
+                Hasta = DateTime.Parse("2024-11-11")
+            };
+            try
+            {
+                var response = await BoletasHonorarios.ListadoBHERecibidosAsync(solicitudLBHER);
+                if (response.Status == 200)
+                {
+                    Console.WriteLine("entro status 200");
+                    Console.WriteLine(response.Message);
+                    Console.WriteLine(response.Data.First().Emisor.RazonSocial);
+                    Console.WriteLine(response.Data.First().FechaEmision);
+                    Console.WriteLine(response.Data.First().Estado);
                 }
             }
             catch (Exception ex)

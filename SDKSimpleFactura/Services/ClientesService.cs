@@ -7,12 +7,12 @@ namespace SDKSimpleFactura.Services
     public class ClientesService : BaseService
     {
         public ClientesService(HttpClient httpClient) : base(httpClient) { }
-        public async Task<Response<ReceptorExternoEnt>> AgregarClientesAsync(DatoExternoRequest request)
+        public async Task<Response<List<ReceptorExternoEnt>>> AgregarClientesAsync(DatoExternoRequest request)
         {
             var url = "/addClients";
-            return await PostAsync<DatoExternoRequest, Response<ReceptorExternoEnt>>(url, request);
+            return await PostAsync<DatoExternoRequest, Response<List<ReceptorExternoEnt>>>(url, request);
         }
-        public async Task<Response<List<ReceptorExternoEnt>>> ListarClientes(Credenciales credenciales)
+        public async Task<Response<List<ReceptorExternoEnt>>> ListarClientesAsync(Credenciales credenciales)
         {
             var url = "/clients";
             return await PostAsync<Credenciales, Response<List<ReceptorExternoEnt>>>(url, credenciales);

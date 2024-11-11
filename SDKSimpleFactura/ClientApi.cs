@@ -11,6 +11,11 @@ namespace SDKSimpleFactura
         public FacturacionService Facturacion { get; }
         public ProductosService Productos { get; }
         public ProveedoresService Proveedores { get; }
+        public ClientesService Clientes { get; }
+        public SucursalService Sucursal { get; }
+        public FolioService Folio { get; }
+        public ConfiguracionService Configuracion { get; }
+        public BoletasHonorariosService BoletasHonorariosService { get; }
 
         public ClientApi(string username, string password)
         {
@@ -28,6 +33,11 @@ namespace SDKSimpleFactura
             Facturacion = new FacturacionService(_httpClient);
             Productos = new ProductosService(_httpClient);
             Proveedores = new ProveedoresService(_httpClient);
+            Clientes = new ClientesService(_httpClient);
+            Sucursal = new SucursalService(_httpClient);
+            Folio = new FolioService(_httpClient);
+            Configuracion = new ConfiguracionService(_httpClient);
+            BoletasHonorariosService = new BoletasHonorariosService(_httpClient);
         }
     }
 }
