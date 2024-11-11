@@ -11,20 +11,40 @@ namespace SDKSimpleFactura.Services
             var url = "/bhe/pdfIssuied";
             return await PostForByteArrayAsync<BHERequest> (url, request);
         }
-        public async Task<Response<List<BHEEnt>>> ListadoBHEEmitidasAsync(ListaBHERequest request)
+        public async Task<Response<List<BHEEnt>>?> ListadoBHEEmitidasAsync(ListaBHERequest request)
         {
             var url = "/bhesIssued";
-            return await PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
+            var result = await PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<List<BHEEnt>>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
         public async Task<byte[]> ObtenerPDFBHERecibidosAsync(BHERequest request)
         {
             var url = "/bhe/pdfReceived";
             return await PostForByteArrayAsync<BHERequest>(url, request);
         }
-        public async Task<Response<List<BHEEnt>>> ListadoBHERecibidosAsync(ListaBHERequest request)
+        public async Task<Response<List<BHEEnt>>?> ListadoBHERecibidosAsync(ListaBHERequest request)
         {
             var url = "/bhesReceived";
-            return await PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
+            var result = await PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<List<BHEEnt>>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
     }
 }

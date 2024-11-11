@@ -256,6 +256,7 @@ namespace AplicacionPruebas
                 }
                 else
                 {
+                    Console.WriteLine($"Error: {result.Status}");
                     Console.WriteLine($"Error: {result.Message}");
                 }
 
@@ -747,8 +748,8 @@ namespace AplicacionPruebas
                     {
                         new NuevoProductoExternoRequest
                         {
-                            Nombre = "Goma 792",
-                            CodigoBarra = "goma792",
+                            Nombre = "Goma 796",
+                            CodigoBarra = "goma796",
                             UnidadMedida = "un",
                             Precio = 50,
                             Exento = false,
@@ -757,8 +758,8 @@ namespace AplicacionPruebas
                         },
                         new NuevoProductoExternoRequest
                         {
-                            Nombre = "Goma 793",
-                            CodigoBarra = "goma793",
+                            Nombre = "Goma 797",
+                            CodigoBarra = "goma797",
                             UnidadMedida = "un",
                             Precio = 50,
                             Exento = false,

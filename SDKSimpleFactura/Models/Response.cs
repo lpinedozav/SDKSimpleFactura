@@ -14,6 +14,6 @@ namespace SDKSimpleFactura.Models
         public T Data { get; set; }
     
         [JsonProperty("errors")]
-        public object Errors { get; set; }
+        public string[] Errors { get; set; }
     }
 }

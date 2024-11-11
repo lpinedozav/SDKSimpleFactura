@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SDKSimpleFactura.Models;
 using System.Text;
 
 namespace SDKSimpleFactura.Services
@@ -12,7 +13,7 @@ namespace SDKSimpleFactura.Services
             _httpClient = httpClient;
         }
 
-        protected async Task<TResponse> PostAsync<TRequest, TResponse>(string url, TRequest request)
+        protected async Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest request)
         {
             var jsonRequest = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
@@ -22,11 +23,21 @@ namespace SDKSimpleFactura.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<TResponse>(responseContent);
-                return result;
+                return new ApiResponse<TResponse>
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
             }
             else
             {
-                throw new Exception($"Error en la petición: {responseContent}");
+                string? errorMessage = $"Error en la peticion: {responseContent}";
+                return new ApiResponse<TResponse>
+                {
+                    IsSuccess = false,
+                    StatusCode = (int)response.StatusCode,
+                    Errores = errorMessage
+                };
             }
         }
 
@@ -63,4 +74,5 @@ namespace SDKSimpleFactura.Services
             }
         }
     }
+
 }
