@@ -6,10 +6,24 @@ namespace SDKSimpleFactura.Services
     public class BoletasHonorariosService : BaseService
     {
         public BoletasHonorariosService(HttpClient httpClient) : base(httpClient) { }
-        public async Task<byte[]> ObtenerPDFBHEEmitidaAsync(BHERequest request)
+        public async Task<Response<byte[]>> ObtenerPDFBHEEmitidaAsync(BHERequest request)
         {
             var url = "/bhe/pdfIssuied";
-            return await PostForByteArrayAsync<BHERequest> (url, request);
+            var result = await PostForByteArrayAsync<BHERequest> (url, request);
+            if (result.IsSuccess)
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
         public async Task<Response<List<BHEEnt>>?> ListadoBHEEmitidasAsync(ListaBHERequest request)
         {
@@ -26,10 +40,24 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<byte[]> ObtenerPDFBHERecibidosAsync(BHERequest request)
+        public async Task<Response<byte[]>> ObtenerPDFBHERecibidosAsync(BHERequest request)
         {
             var url = "/bhe/pdfReceived";
-            return await PostForByteArrayAsync<BHERequest>(url, request);
+            var result = await PostForByteArrayAsync<BHERequest>(url, request);
+            if (result.IsSuccess)
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
         public async Task<Response<List<BHEEnt>>?> ListadoBHERecibidosAsync(ListaBHERequest request)
         {

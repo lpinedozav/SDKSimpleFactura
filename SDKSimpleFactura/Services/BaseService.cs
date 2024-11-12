@@ -41,24 +41,33 @@ namespace SDKSimpleFactura.Services
             }
         }
 
-        protected async Task<byte[]> PostForByteArrayAsync<TRequest>(string url, TRequest request)
+        protected async Task<ApiResponse<byte[]>> PostForByteArrayAsync<TRequest>(string url, TRequest request)
         {
             var jsonRequest = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, content);
-
+            var responseContent = await response.Content.ReadAsByteArrayAsync();
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsByteArrayAsync();
+                return new ApiResponse<byte[]>
+                {
+                    IsSuccess = true,
+                    Data = responseContent
+                };
             }
             else
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Error en la petición: {responseContent}");
+                string? errorMessage = $"Error en la peticion: {responseContent}";
+                return new ApiResponse<byte[]>
+                {
+                    IsSuccess = false,
+                    StatusCode = (int)response.StatusCode,
+                    Errores = errorMessage
+                };
             }
         }
 
-        protected async Task<TResponse> PostMultipartAsync<TResponse>(string url, MultipartFormDataContent content)
+        protected async Task<ApiResponse<TResponse>> PostMultipartAsync<TResponse>(string url, MultipartFormDataContent content)
         {
             var response = await _httpClient.PostAsync(url, content);
             var responseContent = await response.Content.ReadAsStringAsync();
@@ -66,11 +75,21 @@ namespace SDKSimpleFactura.Services
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonConvert.DeserializeObject<TResponse>(responseContent);
-                return result;
+                return new ApiResponse<TResponse>
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
             }
             else
             {
-                throw new Exception($"Error en la petición: {responseContent}");
+                string? errorMessage = $"Error en la peticion: {responseContent}";
+                return new ApiResponse<TResponse>
+                {
+                    IsSuccess = false,
+                    StatusCode = (int)response.StatusCode,
+                    Errores = errorMessage
+                };
             }
         }
     }

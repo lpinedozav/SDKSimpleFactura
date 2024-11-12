@@ -54,10 +54,24 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<byte[]> ObtenerPDFAsync(ListaDteRequest request)
+        public async Task<Response<byte[]>> ObtenerPDFAsync(ListaDteRequest request)
         {
             var url = "/documentReceived/getPdf";
-            return await PostForByteArrayAsync<ListaDteRequest>(url, request);
+            var result = await PostForByteArrayAsync<ListaDteRequest>(url, request);
+            if (result.IsSuccess)
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
         public async Task<Response<string>?> ConciliarRecibidosAsync(Credenciales credenciales, int mes, int anio)
         {

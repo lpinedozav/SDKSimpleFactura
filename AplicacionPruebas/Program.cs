@@ -48,10 +48,10 @@ namespace AplicacionPruebas
             };
             try
             {
-                var pdfBytes = await Facturacion.ObtenerPdfDteAsync(solicitudPDF);
+                var pdfResponse = await Facturacion.ObtenerPdfDteAsync(solicitudPDF);
 
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\dte.pdf";
-                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfResponse.Data);
 
                 Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
             }
@@ -137,10 +137,10 @@ namespace AplicacionPruebas
             };
             try
             {
-                var xmlBytes = await Facturacion.ObtenerXmlDteAsync(solicitudXml);
+                var xmlResponse = await Facturacion.ObtenerXmlDteAsync(solicitudXml);
 
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\xmldte.xml";
-                System.IO.File.WriteAllBytes(rutaArchivo, xmlBytes);
+                System.IO.File.WriteAllBytes(rutaArchivo, xmlResponse.Data);
 
                 Console.WriteLine($"El Xml se ha descargado correctamente en: {rutaArchivo}");
             }
@@ -165,10 +165,10 @@ namespace AplicacionPruebas
             TipoSobreEnvio tipoSobre = 0;
             try
             {
-                var pdfBytes = await Facturacion.ObtenerSobreXmlDteAsync(solicitudSobreXML, tipoSobre);
+                var pdfResponse = await Facturacion.ObtenerSobreXmlDteAsync(solicitudSobreXML, tipoSobre);
 
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\sobrexmldte.xml";
-                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfResponse.Data);
 
                 Console.WriteLine($"El Xml se ha descargado correctamente en: {rutaArchivo}");
             }
@@ -510,7 +510,7 @@ namespace AplicacionPruebas
                 }
                 else
                 {
-                    Console.WriteLine($"Error: {resultMassive.Message}");
+                    Console.WriteLine(resultMassive.Message);
                 }
             }
             catch (Exception ex)
@@ -895,9 +895,9 @@ namespace AplicacionPruebas
             };
             try
             {
-                var pdfBytes = await Proveedores.ObtenerPDFAsync(solicitudObtenerPDF);
+                var pdfResponse = await Proveedores.ObtenerPDFAsync(solicitudObtenerPDF);
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\dteRecibido.pdf";
-                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfResponse.Data);
 
                 Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
 
@@ -1153,10 +1153,10 @@ namespace AplicacionPruebas
             };
             try
             {
-                var pdfBytes = await BoletasHonorarios.ObtenerPDFBHEEmitidaAsync(solicitudBHEPDF);
+                var pdfResponse = await BoletasHonorarios.ObtenerPDFBHEEmitidaAsync(solicitudBHEPDF);
 
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\bhe.pdf";
-                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfResponse.Data);
 
                 Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
             }
@@ -1204,10 +1204,10 @@ namespace AplicacionPruebas
             };
             try
             {
-                var pdfBytes = await BoletasHonorarios.ObtenerPDFBHERecibidosAsync(solicitudBHERPDF);
+                var pdfResponse = await BoletasHonorarios.ObtenerPDFBHERecibidosAsync(solicitudBHERPDF);
 
                 var rutaArchivo = @"C:\Users\luisp\source\repos\SDKSimpleFactura\AplicacionPruebas\Archivos\bheCARLOS.pdf";
-                System.IO.File.WriteAllBytes(rutaArchivo, pdfBytes);
+                System.IO.File.WriteAllBytes(rutaArchivo, pdfResponse.Data);
 
                 Console.WriteLine($"El PDF se ha descargado correctamente en: {rutaArchivo}");
             }

@@ -10,10 +10,24 @@ namespace SDKSimpleFactura.Services
     public class FacturacionService : BaseService
     {
         public FacturacionService(HttpClient httpClient) : base(httpClient) { }
-        public async Task<byte[]> ObtenerPdfDteAsync(SolicitudDte solicitud)
+        public async Task<Response<byte[]>> ObtenerPdfDteAsync(SolicitudDte solicitud)
         {
             var url = "/dte/pdf";
-            return await PostForByteArrayAsync<SolicitudDte>(url, solicitud);
+            var result = await PostForByteArrayAsync<SolicitudDte>(url, solicitud);
+            if (result.IsSuccess)
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
         public async Task<Response<string>?> ObtenerTimbreDteAsync(SolicitudDte solicitud)
         {
@@ -30,10 +44,24 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<byte[]> ObtenerXmlDteAsync(SolicitudDte solicitud)
+        public async Task<Response<byte[]>> ObtenerXmlDteAsync(SolicitudDte solicitud)
         {
             var url = "/dte/xml";
-            return await PostForByteArrayAsync<SolicitudDte>(url, solicitud);
+            var result = await PostForByteArrayAsync<SolicitudDte>(url, solicitud);
+            if (result.IsSuccess) 
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
         }
         public async Task<Response<Dte>?> ObtenerDteAsync(SolicitudDte solicitud)
         {
@@ -50,10 +78,24 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<byte[]> ObtenerSobreXmlDteAsync(SolicitudDte solicitud, TipoSobreEnvio tipoSobre)
+        public async Task<Response<byte[]>> ObtenerSobreXmlDteAsync(SolicitudDte solicitud, TipoSobreEnvio tipoSobre)
         {
             var url = $"/dte/xml/sobre/{tipoSobre}";
-            return await PostForByteArrayAsync<SolicitudDte>(url, solicitud);
+            var result = await PostForByteArrayAsync<SolicitudDte>(url, solicitud);
+            if (result.IsSuccess)
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
 
         }
         public async Task<Response<InvoiceData>?> FacturacionIndividualV2DTEAsync(string sucursal, RequestDTE request)
@@ -101,7 +143,17 @@ namespace SDKSimpleFactura.Services
                     fileContent.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
                     content.Add(fileContent, "input", Path.GetFileName(pathCsv));
 
-                    return await PostMultipartAsync<Response<bool>>(url, content);
+                    var result = await PostMultipartAsync<Response<bool>>(url, content);
+                    if (result.IsSuccess)
+                    {
+                        return result.Data;
+                    }
+                    return new Response<bool>
+                    {
+                        Status = result.StatusCode,
+                        Message = result.Errores,
+                        Data = false
+                    };
                 }
             }
         }
