@@ -1,17 +1,21 @@
-﻿using SDKSimpleFactura.Models;
+﻿using SDKSimpleFactura.Interfaces;
+using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.Folios;
 using SDKSimpleFactura.Models.Productos;
 
 namespace SDKSimpleFactura.Services
 {
-    public class ProductosService : BaseService
+    public class ProductosService : IProductosService
     {
-        public ProductosService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public ProductosService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<List<ProductoEnt>>?> AgregarProductosAsync(DatoExternoRequest request)
         {
             var url = "/addProducts";
-            var result = await PostAsync<DatoExternoRequest, Response<List<ProductoEnt>>>(url, request);
+            var result = await _apiService.PostAsync<DatoExternoRequest, Response<List<ProductoEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -26,7 +30,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<ProductoExternoEnt>>?> ListarProductosAsync(Credenciales credenciales)
         {
             var url = "/products";
-            var result = await PostAsync<Credenciales, Response<List<ProductoExternoEnt>>>(url, credenciales);
+            var result = await _apiService.PostAsync<Credenciales, Response<List<ProductoExternoEnt>>>(url, credenciales);
             if (result.IsSuccess)
             {
                 return result.Data;

@@ -1,15 +1,20 @@
-﻿using SDKSimpleFactura.Models;
+﻿using SDKSimpleFactura.Interfaces;
+using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Folios;
 
 namespace SDKSimpleFactura.Services
 {
-    public class FolioService : BaseService
+    public class FolioService : IFolioService
     {
-        public FolioService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public FolioService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<int>?> ConsultaFoliosDisponiblesAsync(SolicitudFoliosRequest request)
         {
             var url = "/folios/consultar/disponibles";
-            var result = await PostAsync<SolicitudFoliosRequest, Response<int>>(url, request);
+            var result = await _apiService.PostAsync<SolicitudFoliosRequest, Response<int>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -24,7 +29,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<TimbrajeApiEnt>?> SolicitarFoliosAsync(FolioRequest request)
         {
             var url = "/folios/solicitar";
-            var result = await PostAsync<FolioRequest, Response<TimbrajeApiEnt?>>(url, request);
+            var result = await _apiService.PostAsync<FolioRequest, Response<TimbrajeApiEnt?>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -39,7 +44,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<TimbrajeApiEnt>>?> ConsultarFoliosAsync(FolioRequest request)
         {
             var url = "/folios/consultar";
-            var result = await PostAsync<FolioRequest, Response<List<TimbrajeApiEnt>?>>(url, request);
+            var result = await _apiService.PostAsync<FolioRequest, Response<List<TimbrajeApiEnt>?>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -54,7 +59,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<FoliosAnulablesEnt>>?> FoliosSinUsoAsync(SolicitudFoliosRequest request)
         {
             var url = "/folios/consultar/sin-uso";
-            var result = await PostAsync<SolicitudFoliosRequest, Response<List<FoliosAnulablesEnt>>>(url, request);
+            var result = await _apiService.PostAsync<SolicitudFoliosRequest, Response<List<FoliosAnulablesEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;

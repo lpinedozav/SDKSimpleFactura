@@ -1,15 +1,20 @@
 ﻿using SDKSimpleFactura.Models;
+using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Facturacion;
 
 namespace SDKSimpleFactura.Services
 {
-    public class SucursalService : BaseService
+    public class SucursalService : ISucursalService
     {
-        public SucursalService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public SucursalService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<List<Sucursal>>?> ListadoSucursalesAsync(Credenciales credenciales)
         {
             var url = "/branchOffices";
-            var result = await PostAsync<Credenciales, Response<List<Sucursal>>>(url, credenciales);
+            var result = await _apiService.PostAsync<Credenciales, Response<List<Sucursal>>>(url, credenciales);
             if (result.IsSuccess)
             {
                 return result.Data;

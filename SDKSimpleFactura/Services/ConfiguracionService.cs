@@ -1,16 +1,20 @@
 ﻿using SDKSimpleFactura.Models;
-using SDKSimpleFactura.Models.Clientes;
+using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Facturacion;
 
 namespace SDKSimpleFactura.Services
 {
-    public class ConfiguracionService : BaseService
+    public class ConfiguracionService : IConfiguracionService
     {
-        public ConfiguracionService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public ConfiguracionService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<EmisorApiEnt>?> DatosEmpresaAsync(Credenciales credenciales)
         {
             var url = "/datosEmpresa";
-            var result = await PostAsync<Credenciales, Response<EmisorApiEnt>>(url, credenciales);
+            var result = await _apiService.PostAsync<Credenciales, Response<EmisorApiEnt>>(url, credenciales);
             if (result.IsSuccess)
             {
                 return result.Data;

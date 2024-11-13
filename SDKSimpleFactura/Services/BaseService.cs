@@ -1,19 +1,19 @@
 ﻿using Newtonsoft.Json;
+using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models;
 using System.Text;
 
 namespace SDKSimpleFactura.Services
 {
-    public class BaseService
+    public class ApiService : IApiService
     {
-        protected readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-        public BaseService(HttpClient httpClient)
+        public ApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-
-        protected async Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest request)
+        public async Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest request)
         {
             var jsonRequest = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
@@ -40,8 +40,7 @@ namespace SDKSimpleFactura.Services
                 };
             }
         }
-
-        protected async Task<ApiResponse<byte[]>> PostForByteArrayAsync<TRequest>(string url, TRequest request)
+        public async Task<ApiResponse<byte[]>> PostForByteArrayAsync<TRequest>(string url, TRequest request)
         {
             var jsonRequest = JsonConvert.SerializeObject(request);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
@@ -66,8 +65,7 @@ namespace SDKSimpleFactura.Services
                 };
             }
         }
-
-        protected async Task<ApiResponse<TResponse>> PostMultipartAsync<TResponse>(string url, MultipartFormDataContent content)
+        public async Task<ApiResponse<TResponse>> PostMultipartAsync<TResponse>(string url, MultipartFormDataContent content)
         {
             var response = await _httpClient.PostAsync(url, content);
             var responseContent = await response.Content.ReadAsStringAsync();

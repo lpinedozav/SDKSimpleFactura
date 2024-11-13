@@ -2,16 +2,20 @@
 using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Productos;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.BoletasHonorarios;
+using SDKSimpleFactura.Interfaces;
 namespace SDKSimpleFactura.Services
 {
-    public class ClientesService : BaseService
+    public class ClientesService : IClientesService
     {
-        public ClientesService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public ClientesService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<List<ReceptorExternoEnt>>?> AgregarClientesAsync(DatoExternoRequest request)
         {
             var url = "/addClients";
-            var result = await PostAsync<DatoExternoRequest, Response<List<ReceptorExternoEnt>>>(url, request);
+            var result = await _apiService.PostAsync<DatoExternoRequest, Response<List<ReceptorExternoEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -26,7 +30,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<ReceptorExternoEnt>>?> ListarClientesAsync(Credenciales credenciales)
         {
             var url = "/clients";
-            var result = await PostAsync<Credenciales, Response<List<ReceptorExternoEnt>>>(url, credenciales);
+            var result = await _apiService.PostAsync<Credenciales, Response<List<ReceptorExternoEnt>>>(url, credenciales);
             if (result.IsSuccess)
             {
                 return result.Data;

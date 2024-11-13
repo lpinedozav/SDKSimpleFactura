@@ -7,7 +7,6 @@ using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Folios;
 using SDKSimpleFactura.Models.Productos;
 using SDKSimpleFactura.Models.Proveedores;
-using SDKSimpleFactura.Services;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
 
@@ -22,7 +21,7 @@ namespace AplicacionPruebas
             string password = "Rv8Il4eV";
 
             // Crear instancias del cliente API
-            var clienteApi = new ClientApi(username, password);
+            var clienteApi = new SimpleFacturaClient(username, password);
             var Facturacion = clienteApi.Facturacion;
             var Productos = clienteApi.Productos;
             var Proveedores = clienteApi.Proveedores;
@@ -748,8 +747,8 @@ namespace AplicacionPruebas
                     {
                         new NuevoProductoExternoRequest
                         {
-                            Nombre = "Goma 796",
-                            CodigoBarra = "goma796",
+                            Nombre = "Goma 800",
+                            CodigoBarra = "goma800",
                             UnidadMedida = "un",
                             Precio = 50,
                             Exento = false,
@@ -758,8 +757,8 @@ namespace AplicacionPruebas
                         },
                         new NuevoProductoExternoRequest
                         {
-                            Nombre = "Goma 797",
-                            CodigoBarra = "goma797",
+                            Nombre = "Goma 800",
+                            CodigoBarra = "goma801",
                             UnidadMedida = "un",
                             Precio = 50,
                             Exento = false,

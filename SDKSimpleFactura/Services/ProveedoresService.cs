@@ -1,18 +1,22 @@
 ﻿
 using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.Productos;
+using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Proveedores;
 
 namespace SDKSimpleFactura.Services
 {
-    public class ProveedoresService : BaseService
+    public class ProveedoresService : IProveedoresService
     {
-        public ProveedoresService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public ProveedoresService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<bool>?> AcuseReciboAsync(AcuseReciboExternoRequest request)
         {
             var url = "/acknowledgmentReceipt";
-            var result = await PostAsync<AcuseReciboExternoRequest, Response<bool>>(url, request);
+            var result = await _apiService.PostAsync<AcuseReciboExternoRequest, Response<bool>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -27,7 +31,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<Dte>>?> ListadoDtesRecibidosAsync(ListaDteRequest request)
         {
             var url = "/documentsReceived";
-            var result = await PostAsync<ListaDteRequest, Response<List<Dte>>>(url, request);
+            var result = await _apiService.PostAsync<ListaDteRequest, Response<List<Dte>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -42,7 +46,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<byte[]>?> ObtenerXmlAsync(ListaDteRequest request)
         {
             var url = "/documentReceived/xml";
-            var result = await PostAsync<ListaDteRequest, Response<byte[]>>(url, request);
+            var result = await _apiService.PostAsync<ListaDteRequest, Response<byte[]>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -57,7 +61,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<byte[]>> ObtenerPDFAsync(ListaDteRequest request)
         {
             var url = "/documentReceived/getPdf";
-            var result = await PostForByteArrayAsync<ListaDteRequest>(url, request);
+            var result = await _apiService.PostForByteArrayAsync<ListaDteRequest>(url, request);
             if (result.IsSuccess)
             {
                 return new Response<byte[]>
@@ -76,7 +80,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<string>?> ConciliarRecibidosAsync(Credenciales credenciales, int mes, int anio)
         {
             var url = $"/documentsReceived/consolidate/{mes}/{anio}";
-            var result = await PostAsync<Credenciales, Response<string>>(url, credenciales);
+            var result = await _apiService.PostAsync<Credenciales, Response<string>>(url, credenciales);
             if (result.IsSuccess)
             {
                 return result.Data;

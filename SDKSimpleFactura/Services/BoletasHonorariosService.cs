@@ -1,15 +1,20 @@
-﻿using SDKSimpleFactura.Models;
+﻿using SDKSimpleFactura.Interfaces;
+using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.BoletasHonorarios;
 
 namespace SDKSimpleFactura.Services
 {
-    public class BoletasHonorariosService : BaseService
+    public class BoletasHonorariosService : IBoletasHonorariosService
     {
-        public BoletasHonorariosService(HttpClient httpClient) : base(httpClient) { }
+        private readonly IApiService _apiService;
+        public BoletasHonorariosService(IApiService apiService)
+        {
+            _apiService = apiService;
+        }
         public async Task<Response<byte[]>> ObtenerPDFBHEEmitidaAsync(BHERequest request)
         {
             var url = "/bhe/pdfIssuied";
-            var result = await PostForByteArrayAsync<BHERequest> (url, request);
+            var result = await _apiService.PostForByteArrayAsync<BHERequest> (url, request);
             if (result.IsSuccess)
             {
                 return new Response<byte[]>
@@ -28,7 +33,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<BHEEnt>>?> ListadoBHEEmitidasAsync(ListaBHERequest request)
         {
             var url = "/bhesIssued";
-            var result = await PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
+            var result = await _apiService.PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
@@ -43,7 +48,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<byte[]>> ObtenerPDFBHERecibidosAsync(BHERequest request)
         {
             var url = "/bhe/pdfReceived";
-            var result = await PostForByteArrayAsync<BHERequest>(url, request);
+            var result = await _apiService.PostForByteArrayAsync<BHERequest>(url, request);
             if (result.IsSuccess)
             {
                 return new Response<byte[]>
@@ -62,7 +67,7 @@ namespace SDKSimpleFactura.Services
         public async Task<Response<List<BHEEnt>>?> ListadoBHERecibidosAsync(ListaBHERequest request)
         {
             var url = "/bhesReceived";
-            var result = await PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
+            var result = await _apiService.PostAsync<ListaBHERequest, Response<List<BHEEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
