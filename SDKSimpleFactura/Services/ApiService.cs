@@ -31,7 +31,7 @@ namespace SDKSimpleFactura.Services
             }
             else
             {
-                string? errorMessage = $"Error en la peticion: {responseContent}";
+                string? errorMessage = responseContent;
                 return new ApiResponse<TResponse>
                 {
                     IsSuccess = false,
@@ -81,7 +81,7 @@ namespace SDKSimpleFactura.Services
             }
             else
             {
-                string? errorMessage = $"Error en la peticion: {responseContent}";
+                string? errorMessage = responseContent;
                 return new ApiResponse<TResponse>
                 {
                     IsSuccess = false,
