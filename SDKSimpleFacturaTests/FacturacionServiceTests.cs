@@ -500,9 +500,9 @@ namespace SDKSimpleFacturaTests
                         IdDoc = new IdentificacionDTE
                         {
                             TipoDTE = (DTEType)110,
-                            FchEmis = DateTime.Parse("2024-08-17"),
+                            FchEmis = DateTime.Now,
                             FmaPago = (FormaPagoEnum)1,
-                            FchVenc = DateTime.Parse("2024-08-17")
+                            FchVenc = DateTime.Now.AddMonths(5)
                         },
                         Emisor = new Emisor
                         {
@@ -808,9 +808,9 @@ namespace SDKSimpleFacturaTests
                         IdDoc = new IdentificacionDTE
                         {
                             TipoDTE = (DTEType)56,
-                            FchEmis = DateTime.Parse("2024-08-13"),
+                            FchEmis = DateTime.Now,
                             FmaPago = (FormaPagoEnum)2,
-                            FchVenc = DateTime.Parse("2024-09-12")
+                            FchVenc = DateTime.Now.AddMonths(6)
                         },
                         Emisor = new Emisor
                         {
