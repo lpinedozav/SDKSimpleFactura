@@ -56,7 +56,8 @@ namespace SDKSimpleFactura.Services
             }
             else
             {
-                string? errorMessage = $"Error en la peticion: {responseContent}";
+                var responseError = await response.Content.ReadAsStringAsync();
+                string? errorMessage = responseError;
                 return new ApiResponse<byte[]>
                 {
                     IsSuccess = false,

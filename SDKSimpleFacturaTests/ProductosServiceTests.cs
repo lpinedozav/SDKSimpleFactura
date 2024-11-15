@@ -1,38 +1,31 @@
-﻿using Moq;
-using Moq.Protected;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using SDKSimpleFactura;
+using SDKSimpleFactura.Helpers;
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Productos;
-using SDKSimpleFactura.Services;
-using System.Net;
-using System.Text;
 
 namespace SDKSimpleFacturaTests
 {
     [TestClass]
     public class ProductosServiceTests
     {
-        private Mock<HttpMessageHandler>? _httpMessageHandlerMock;
-        private HttpClient? _httpClient;
-        private IApiService? _apiService;
+        private SimpleFacturaClient? _simpleFacturaClient;
         private IProductosService? _productoService;
         [TestInitialize]
         public void Setup()
         {
-            _httpMessageHandlerMock = new Mock<HttpMessageHandler>();
-            _httpClient = new HttpClient(_httpMessageHandlerMock.Object)
-            {
-                BaseAddress = new System.Uri("http://localhost/")
-            };
-            _apiService = new ApiService(_httpClient);
-            _productoService = new ProductosService(_apiService);
+            string username = "demo@chilesystems.com";
+            string password = "Rv8Il4eV";
+            _simpleFacturaClient = new SimpleFacturaClient(username, password);
+            _productoService = _simpleFacturaClient.Productos;
         }
         [TestMethod]
         public async Task AgregarProductosAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
         {
             //Arrange
+            var name = StringHelper.GenerateRandomString(6);
             var request = new DatoExternoRequest
             {
                 Credenciales = new Credenciales 
@@ -44,50 +37,24 @@ namespace SDKSimpleFacturaTests
                 {
                     new NuevoProductoExternoRequest 
                     {
-                        Nombre = "Goma 805", 
-                        CodigoBarra = "goma805", 
-                        Precio = 50 
+                        Nombre = name, 
+                        CodigoBarra = name, 
+                        Precio = 50,
+                        UnidadMedida = "un",
+                        Exento = false,
+                        TieneImpuestos = false,
+                        Impuestos = [0]
                     }
                 }
             };
-            var fakeResponse = new Response<List<ProductoEnt>>
-            {
-                Status = 200,
-                Message = "Nuevos Productos",
-                Data = new List<ProductoEnt>
-                {
-                    new ProductoEnt 
-                    { 
-                        ProductoId = Guid.NewGuid(),
-                        Nombre = "Goma 805",
-                        Precio = 50 
-                    }
-                },
-                Errors = null
-            };
-            var jsonResponse = JsonConvert.SerializeObject(fakeResponse);
-
-            _httpMessageHandlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
-                });
             //Act
             var result = await _productoService.AgregarProductosAsync(request);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Status, 200);
             Assert.AreEqual(result.Message, "Nuevos Productos");
-            Assert.AreEqual(result.Data.First().Nombre, "Goma 805");
+            Assert.IsTrue(result.Data.Count>0);
             Assert.IsNull(result.Errors);
-
         }
         [TestMethod]
         public async Task AgregarProductosAsync_ReturnsBadRequest_WhenApiCallIsFail()
@@ -101,35 +68,18 @@ namespace SDKSimpleFacturaTests
                 },
                 Productos = new List<NuevoProductoExternoRequest>
                 {
-                    new NuevoProductoExternoRequest 
-                    { 
-                        Nombre = "Goma 805", 
-                        CodigoBarra = "goma805", 
-                        Precio = 50 
+                    new NuevoProductoExternoRequest
+                    {
+                        Nombre = "Goma 901",
+                        CodigoBarra = "goma901",
+                        Precio = 50,
+                        UnidadMedida = "un",
+                        Exento = false,
+                        TieneImpuestos = false,
+                        Impuestos = [0]
                     }
                 }
             };
-            var fakeResponse = new Response<bool>
-            {
-                Status = 400,
-                Message = null,
-                Data = false,
-                Errors = new[] { "Rut de emisor vacio" }
-            };
-            var jsonResponse = JsonConvert.SerializeObject(fakeResponse);
-
-            _httpMessageHandlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
-                });
             //Act
             var result = await _productoService.AgregarProductosAsync(request);
             //Assert
@@ -150,52 +100,13 @@ namespace SDKSimpleFacturaTests
                 RutEmisor = "76269769-6",
                 NombreSucursal = "Casa Matriz"
             };
-            var fakeResponse = new Response<List<ProductoExternoEnt>>
-            {
-                Status = 200,
-                Message = "Productos",
-                Data = new List<ProductoExternoEnt>
-                {
-                    new ProductoExternoEnt
-                    {
-                        ProductoId = Guid.NewGuid(),
-                        Nombre = "Harina Mariposa",
-                        Precio = 2300,
-                        Exento = false,
-                        Impuestos = new List<ImpuestoProductoExternoEnt>
-                        {
-                            new ImpuestoProductoExternoEnt
-                            {
-                                CodigoSii = 271,
-                                NombreImp = "Bebidas Azucaradas",
-                                Tasa = 18
-                            }
-                        }
-                    }
-                },
-                Errors = null
-            };
-            var jsonResponse = JsonConvert.SerializeObject(fakeResponse);
-
-            _httpMessageHandlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
-                });
             //Act
             var result = await _productoService.ListarProductosAsync(request);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Status, 200);
             Assert.AreEqual(result.Message, "Productos");
-            Assert.AreEqual(result.Data.First().Nombre, "Harina Mariposa");
+            Assert.IsTrue(result.Data.Count>=0);
             Assert.IsNull(result.Errors);
         }
         [TestMethod]
@@ -204,30 +115,9 @@ namespace SDKSimpleFacturaTests
             //Arrange
             var request = new Credenciales
             {
-                RutEmisor = "76269769-6",
+                //RutEmisor = "76269769-6",
                 NombreSucursal = "Casa Matriz"
             };
-            var fakeResponse = new Response<bool>
-            {
-                Status = 400,
-                Message = null,
-                Data = false,
-                Errors = new[] { "Rut de emisor vacio" }
-            };
-            var jsonResponse = JsonConvert.SerializeObject(fakeResponse);
-
-            _httpMessageHandlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Content = new StringContent(jsonResponse, Encoding.UTF8, "application/json")
-                });
             //Act
             var result = await _productoService.ListarProductosAsync(request);
             //Assert

@@ -21,9 +21,10 @@ namespace SDKSimpleFactura
 
         public SimpleFacturaClient(string username, string password)
         {
-            baseUrl = "https://api.simplefactura.cl";
+            baseUrl = "https://backend-qa.simplefactura.cl";
             _httpClient = new HttpClient
             {
+                Timeout = TimeSpan.FromMinutes(5),
                 BaseAddress = new Uri(baseUrl)
             };
 

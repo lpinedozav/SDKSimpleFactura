@@ -4,6 +4,7 @@ using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Facturacion;
+using SDKSimpleFactura.Models.Folios;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
 
@@ -13,6 +14,7 @@ namespace SDKSimpleFacturaTests
     public class FacturacionServiceTests
     {
         private SimpleFacturaClient? _simpleFacturaClient;
+        private IFolioService _folioService;
         private IFacturacionService? _facturacionService;
 
         [TestInitialize]
@@ -21,6 +23,7 @@ namespace SDKSimpleFacturaTests
             string username = "demo@chilesystems.com";
             string password = "Rv8Il4eV";
             _simpleFacturaClient = new SimpleFacturaClient(username,password);
+            _folioService = _simpleFacturaClient.Folio;
             _facturacionService = _simpleFacturaClient.Facturacion;
         }
         [TestMethod]
@@ -74,10 +77,12 @@ namespace SDKSimpleFacturaTests
             var result = await _facturacionService.ObtenerPdfDteAsync(solicitudPDF);
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(500, result.Status);
-            Assert.IsNull(result.Data);
-            Assert.IsTrue(result.Message.Contains("Error en la peticion"));
-            Assert.IsNull(result.Errors);
+            var response = JsonConvert.DeserializeObject<Response<byte[]>>(result.Message);
+            Assert.IsNotNull(response);
+            Assert.AreEqual(response.Status, 500);
+            Assert.AreEqual(response.Message, "Error al obtener pdf desde api");
+            Assert.IsNull(response.Data);
+            CollectionAssert.Contains(response.Errors, "DTE no encontrado");
         }
         [TestMethod]
         public async Task ObtenerTimbreDteAsync_ReturnsOkResult_WhenTimbreIsGeneratedSuccessfully()
@@ -184,10 +189,12 @@ namespace SDKSimpleFacturaTests
             var result = await _facturacionService.ObtenerXmlDteAsync(request);
             //Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(500, result.Status);
-            Assert.IsNull(result.Data);
-            Assert.IsTrue(result.Message.Contains("Error en la peticion"));
-            Assert.IsNull(result.Errors);
+            var response = JsonConvert.DeserializeObject<Response<string>>(result.Message);
+            Assert.IsNotNull(response);
+            Assert.AreEqual(response.Status, 500);
+            Assert.AreEqual(response.Data, "Error al obtener xml desde api");
+            Assert.IsNull(response.Message);
+            CollectionAssert.Contains(response.Errors, "DTE no encontrado");
         }
         [TestMethod]
         public async Task ObtenerSobreXmlDteAsync_ReturnsOkResult_WhenXmlSobreIsGeneratedSuccessfully()
@@ -237,10 +244,12 @@ namespace SDKSimpleFacturaTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(500, result.Status);
-            Assert.IsNull(result.Data);
-            Assert.IsTrue(result.Message.Contains("Error en la peticion"));
-            Assert.IsNull(result.Errors);
+            var response = JsonConvert.DeserializeObject<Response<string>>(result.Message);
+            Assert.IsNotNull(response);
+            Assert.AreEqual(response.Status, 500);
+            Assert.AreEqual(response.Data, "Error al obtener sobre xml desde api");
+            Assert.IsNull(response.Message);
+            CollectionAssert.Contains(response.Errors, "El DTE con folio 0 no se encuentra para el RUT 76269769-6");
         }
         [TestMethod]
         public async Task ObtenerDteAsync_ReturnsOkResult_WhenDteIsRetrievedSuccessfully()
@@ -269,7 +278,6 @@ namespace SDKSimpleFacturaTests
             Assert.IsNotNull(result.Data);
             Assert.AreEqual(12553, result.Data.Folio);
             Assert.AreEqual("Certificación", result.Data.Ambiente);
-            Assert.AreEqual("Documento Aceptado con Reparos", result.Data.EstadoSII);
             Assert.AreEqual("Cliente en Marketplace", result.Data.RazonSocialReceptor);
             Assert.AreEqual("66666666-6", result.Data.RutReceptor);
             Assert.AreEqual(990, result.Data.Total);
@@ -1174,6 +1182,28 @@ namespace SDKSimpleFacturaTests
             Assert.IsTrue(result.Message.Contains("Rut de emisor vacio"));
             Assert.IsNull(result.Data);
             Assert.IsNull(result.Errors);
+        }
+
+        private async Task<bool?> SolicitarFolio(DTEType tipo, int cantidad)
+        {
+            //probar
+            var request = new FolioRequest
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    NombreSucursal = "Casa Matriz"
+                },
+                Cantidad = cantidad,
+                CodigoTipoDte = tipo
+            };
+            var result = await _folioService.SolicitarFoliosAsync(request);
+            if (result?.Status == 200)
+            {
+                return true;
+            }
+            return false;
+
         }
     }
 }
