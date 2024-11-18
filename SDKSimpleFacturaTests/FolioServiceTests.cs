@@ -17,8 +17,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            string username = "demo@chilesystems.com";
-            string password = "Rv8Il4eV";
+            string username = Configuracion.Usuario;
+            string password = Configuracion.Contrasena;
             _simpleFacturaClient = new SimpleFacturaClient(username, password);
             _folioService = _simpleFacturaClient.Folio;
         }

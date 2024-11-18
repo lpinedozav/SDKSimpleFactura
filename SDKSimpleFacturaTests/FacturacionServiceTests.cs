@@ -20,8 +20,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            string username = "demo@chilesystems.com";
-            string password = "Rv8Il4eV";
+            string username = Configuracion.Usuario;
+            string password = Configuracion.Contrasena;
             _simpleFacturaClient = new SimpleFacturaClient(username,password);
             _folioService = _simpleFacturaClient.Folio;
             _facturacionService = _simpleFacturaClient.Facturacion;
@@ -807,7 +807,7 @@ namespace SDKSimpleFacturaTests
                     {
                         IdDoc = new IdentificacionDTE
                         {
-                            TipoDTE = (DTEType)56,
+                            TipoDTE = (DTEType)61,
                             FchEmis = DateTime.Now,
                             FmaPago = (FormaPagoEnum)2,
                             FchVenc = DateTime.Now.AddMonths(6)
