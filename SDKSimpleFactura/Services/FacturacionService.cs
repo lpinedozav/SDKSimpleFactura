@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Interfaces;
-using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Facturacion;
+using SDKSimpleFactura.Models.Request;
+using SDKSimpleFactura.Models.Response;
 using System.Net.Http.Headers;
 using System.Text;
 

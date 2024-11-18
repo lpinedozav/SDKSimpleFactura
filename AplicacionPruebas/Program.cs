@@ -2,11 +2,9 @@
 using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Models.BoletasHonorarios;
-using SDKSimpleFactura.Models.Clientes;
 using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Folios;
-using SDKSimpleFactura.Models.Productos;
-using SDKSimpleFactura.Models.Proveedores;
+using SDKSimpleFactura.Models.Request;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
 

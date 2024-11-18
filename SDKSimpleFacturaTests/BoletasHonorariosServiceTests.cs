@@ -1,10 +1,9 @@
 ﻿using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Services;
-using SDKSimpleFactura.Models.BoletasHonorarios;
+using SDKSimpleFactura.Models.Request;
 using Newtonsoft.Json;
-using SDKSimpleFactura.Models;
+using SDKSimpleFactura.Models.Response;
 
 namespace SDKSimpleFacturaTests
 {

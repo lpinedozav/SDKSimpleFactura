@@ -1,6 +1,7 @@
 ﻿using SDKSimpleFactura.Interfaces;
-using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Folios;
+using SDKSimpleFactura.Models.Request;
+using SDKSimpleFactura.Models.Response;
 
 namespace SDKSimpleFactura.Services
 {

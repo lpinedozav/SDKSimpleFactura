@@ -2,9 +2,9 @@
 using SDKSimpleFactura;
 using SDKSimpleFactura.Models.Productos;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.Clientes;
 using Newtonsoft.Json;
-using SDKSimpleFactura.Models;
+using SDKSimpleFactura.Models.Request;
+using SDKSimpleFactura.Models.Response;
 namespace SDKSimpleFacturaTests
 {
     [TestClass]

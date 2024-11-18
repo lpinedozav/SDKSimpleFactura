@@ -1,11 +1,6 @@
 ﻿using SDKSimpleFactura.Models.Facturacion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SDKSimpleFactura.Models.BoletasHonorarios
+namespace SDKSimpleFactura.Models.Request
 {
     public class BHERequest
     {

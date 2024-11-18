@@ -1,9 +1,10 @@
 ﻿using SDKSimpleFactura.Enum;
+using SDKSimpleFactura.Models.Facturacion;
 using static SDKSimpleFactura.Enum.Ambiente;
 using static SDKSimpleFactura.Enum.TipoDTE;
 
 
-namespace SDKSimpleFactura.Models.Facturacion
+namespace SDKSimpleFactura.Models.Request
 {
     public class ListaDteRequest
     {

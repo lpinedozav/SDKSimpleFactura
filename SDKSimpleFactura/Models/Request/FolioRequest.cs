@@ -1,7 +1,7 @@
 ﻿using SDKSimpleFactura.Models.Facturacion;
 using static SDKSimpleFactura.Enum.TipoDTE;
 
-namespace SDKSimpleFactura.Models.Folios
+namespace SDKSimpleFactura.Models.Request
 {
     public class FolioRequest
     {

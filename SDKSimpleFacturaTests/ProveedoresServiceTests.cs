@@ -1,11 +1,11 @@
 ﻿using SDKSimpleFactura.Interfaces;
-using SDKSimpleFactura.Models.Proveedores;
+using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Enum;
-using SDKSimpleFactura.Models;
 using Newtonsoft.Json;
 using SDKSimpleFactura;
 using static SDKSimpleFactura.Enum.TipoDTE;
+using SDKSimpleFactura.Models.Response;
 namespace SDKSimpleFacturaTests
 {
     [TestClass]

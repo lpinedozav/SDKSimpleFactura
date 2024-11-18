@@ -1,7 +1,7 @@
 ﻿using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Enum;
 
-namespace SDKSimpleFactura.Models.Proveedores
+namespace SDKSimpleFactura.Models.Request
 {
     public class AcuseReciboExternoRequest
     {

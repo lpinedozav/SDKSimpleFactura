@@ -1,11 +1,7 @@
 ﻿using SDKSimpleFactura.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SDKSimpleFactura.Models.Facturacion;
 
-namespace SDKSimpleFactura.Models.Facturacion
+namespace SDKSimpleFactura.Models.Request
 {
     public class RequestDTE
     {

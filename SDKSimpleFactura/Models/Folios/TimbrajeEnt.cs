@@ -1,4 +1,6 @@
-﻿namespace SDKSimpleFactura.Models.Folios
+﻿using SDKSimpleFactura.Helpers;
+
+namespace SDKSimpleFactura.Models.Folios
 {
     public class TimbrajeEnt
     {
@@ -48,7 +50,7 @@
                 Desde = ent.Desde;
                 Hasta = ent.Hasta;
                 FechaVencimiento = ent.FechaVencimiento;
-                TipoDte = SDKSimpleFactura.Utilidades.Utilidades.ObtenerNombreTipoDTE(ent.CodigoSii);
+                TipoDte = Utilidades.ObtenerNombreTipoDTE(ent.CodigoSii);
                 FoliosDisponibles = ent.FoliosDisponibles;
                 Ambiente = ent.Ambiente;
             }

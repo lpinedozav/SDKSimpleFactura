@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SDKSimpleFactura.Interfaces;
-using SDKSimpleFactura.Models;
+using SDKSimpleFactura.Models.Response;
 using System.Text;
 
 namespace SDKSimpleFactura.Services

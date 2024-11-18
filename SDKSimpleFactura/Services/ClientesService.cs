@@ -1,8 +1,7 @@
-﻿using SDKSimpleFactura.Models.Clientes;
-using SDKSimpleFactura.Models;
-using SDKSimpleFactura.Models.Productos;
-using SDKSimpleFactura.Models.Facturacion;
+﻿using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Interfaces;
+using SDKSimpleFactura.Models.Request;
+using SDKSimpleFactura.Models.Response;
 namespace SDKSimpleFactura.Services
 {
     public class ClientesService : IClientesService

@@ -1,6 +1,7 @@
 ﻿using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Facturacion;
+using SDKSimpleFactura.Models.Response;
 
 namespace SDKSimpleFactura.Services
 {

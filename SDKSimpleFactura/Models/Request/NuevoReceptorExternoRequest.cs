@@ -1,4 +1,4 @@
-﻿namespace SDKSimpleFactura.Models.Clientes
+﻿namespace SDKSimpleFactura.Models.Request
 {
     public class ReceptorExternoEnt
     {

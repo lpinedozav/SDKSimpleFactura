@@ -2,9 +2,9 @@
 using SDKSimpleFactura;
 using SDKSimpleFactura.Helpers;
 using SDKSimpleFactura.Interfaces;
-using SDKSimpleFactura.Models;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.Productos;
+using SDKSimpleFactura.Models.Request;
+using SDKSimpleFactura.Models.Response;
 
 namespace SDKSimpleFacturaTests
 {

@@ -1,6 +1,6 @@
 ﻿using SDKSimpleFactura.Models.Facturacion;
 
-namespace SDKSimpleFactura.Models.BoletasHonorarios
+namespace SDKSimpleFactura.Models.Request
 {
     public class ListaBHERequest
     {
@@ -8,6 +8,6 @@ namespace SDKSimpleFactura.Models.BoletasHonorarios
         public long? Folio { get; set; }
         public DateTime? Desde { get; set; }
         public DateTime? Hasta { get; set; }
-       
+
     }
 }

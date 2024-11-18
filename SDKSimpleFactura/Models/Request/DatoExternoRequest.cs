@@ -1,7 +1,6 @@
-﻿using SDKSimpleFactura.Models.Clientes;
-using SDKSimpleFactura.Models.Facturacion;
+﻿using SDKSimpleFactura.Models.Facturacion;
 
-namespace SDKSimpleFactura.Models.Productos
+namespace SDKSimpleFactura.Models.Request
 {
     public class DatoExternoRequest
     {
