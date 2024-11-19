@@ -1,4 +1,4 @@
-﻿namespace SDKSimpleFactura.Models
+﻿namespace SDKSimpleFactura.Models.Response
 {
     public class ActividadeconomicaApiEnt
     {

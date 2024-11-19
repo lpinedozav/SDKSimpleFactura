@@ -1,4 +1,4 @@
-﻿namespace SDKSimpleFactura.Models.Productos
+﻿namespace SDKSimpleFactura.Models.Response
 {
     public class ProductoEnt
     {

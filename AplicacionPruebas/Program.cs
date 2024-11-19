@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using SDKSimpleFactura;
+﻿using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
-using SDKSimpleFactura.Models.BoletasHonorarios;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.Folios;
 using SDKSimpleFactura.Models.Request;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;

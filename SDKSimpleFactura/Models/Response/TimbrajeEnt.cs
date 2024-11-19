@@ -1,6 +1,6 @@
 ﻿using SDKSimpleFactura.Helpers;
 
-namespace SDKSimpleFactura.Models.Folios
+namespace SDKSimpleFactura.Models.Response
 {
     public class TimbrajeEnt
     {

@@ -70,15 +70,15 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<Response<Dte>?> ObtenerDteAsync(SolicitudDte solicitud)
+        public async Task<Response<DteEnt>?> ObtenerDteAsync(SolicitudDte solicitud)
         {
             var url = "/documentIssued";
-            var result = await _apiService.PostAsync<SolicitudDte, Response<Dte>>(url, solicitud);
+            var result = await _apiService.PostAsync<SolicitudDte, Response<DteEnt>>(url, solicitud);
             if (result.IsSuccess)
             {
                 return result.Data;
             }
-            return new Response<Dte>
+            return new Response<DteEnt>
             {
                 Status = result.StatusCode,
                 Message = result.Errores,
@@ -179,15 +179,15 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<Response<List<Dte>>?> ListadoDtesEmitidosAsync(ListaDteRequest request)
+        public async Task<Response<List<DteEnt>>?> ListadoDtesEmitidosAsync(ListaDteRequest request)
         {
             var url = "/documentsIssued";
-            var result = await _apiService.PostAsync<ListaDteRequest, Response<List<Dte>>>(url, request);
+            var result = await _apiService.PostAsync<ListaDteRequest, Response<List<DteEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
             }
-            return new Response<List<Dte>>
+            return new Response<List<DteEnt>>
             {
                 Status = result.StatusCode,
                 Message = result.Errores,

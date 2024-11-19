@@ -1,6 +1,6 @@
-﻿namespace SDKSimpleFactura.Models
+﻿namespace SDKSimpleFactura.Models.Response
 {
-    public class Sucursal
+    public class SucursalEnt
     {
         public string Nombre;
         public string Direccion;

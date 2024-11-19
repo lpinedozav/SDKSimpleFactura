@@ -1,4 +1,4 @@
-﻿namespace SDKSimpleFactura.Models.BoletasHonorarios
+﻿namespace SDKSimpleFactura.Models.Response
 {
     public class BHEEnt
     {
@@ -7,9 +7,9 @@
         public string? CodigoBarra { get; set; }
         public EmisorEnt? Emisor { get; set; }
         public ReceptorEnt? Receptor { get; set; }
-        public TotalesEnt? Totales {  get; set; }
+        public TotalesEnt? Totales { get; set; }
         public string? Estado { get; set; }
-        public string? DescripcionAnulacion{ get; set; }
+        public string? DescripcionAnulacion { get; set; }
     }
     public class EmisorEnt
     {
@@ -19,15 +19,15 @@
     }
     public class ReceptorEnt
     {
-        public string? Rut {  get; set; }
+        public string? Rut { get; set; }
         public string? Comuna { get; set; }
         public string? Nombre { get; set; }
         public string? Direccion { get; set; }
-        public string? Region {  get; set; }
+        public string? Region { get; set; }
     }
     public class TotalesEnt
     {
-        public decimal? TotalHonorarios {  get; set; }
+        public decimal? TotalHonorarios { get; set; }
         public decimal? Bruto { get; set; }
         public decimal? Liquido { get; set; }
         public decimal? Pagado { get; set; }

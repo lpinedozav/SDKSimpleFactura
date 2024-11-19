@@ -1,8 +1,8 @@
-﻿using SDKSimpleFactura.Models.Productos;
+﻿using SDKSimpleFactura.Models.Facturacion;
 
-namespace SDKSimpleFactura.Models.Facturacion
+namespace SDKSimpleFactura.Models.Response
 {
-    public class Dte
+    public class DteEnt
     {
         public string? Ambiente { get; set; }
         public string? FolioReutilizado { get; set; }
@@ -28,8 +28,8 @@ namespace SDKSimpleFactura.Models.Facturacion
         public decimal? IvaTerceros { get; set; }
         public decimal? IvaPropio { get; set; }
         public decimal? TotalImpuestosAdicionales { get; set; }
-        public decimal? MontoNoFacturable {  get; set; }
-        public string? FormaPago {  get; set; }
+        public decimal? MontoNoFacturable { get; set; }
+        public string? FormaPago { get; set; }
         public decimal? Total { get; set; }
         public List<DetalleDte>? Detalles { get; set; }
         public List<DescuentosRecargos>? DescuentosRecargosGlobales { get; set; }

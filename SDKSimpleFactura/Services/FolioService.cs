@@ -1,5 +1,4 @@
 ﻿using SDKSimpleFactura.Interfaces;
-using SDKSimpleFactura.Models.Folios;
 using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
 

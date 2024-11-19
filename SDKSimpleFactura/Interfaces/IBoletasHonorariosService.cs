@@ -1,5 +1,4 @@
-﻿using SDKSimpleFactura.Models.BoletasHonorarios;
-using SDKSimpleFactura.Models.Request;
+﻿using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
 
 namespace SDKSimpleFactura.Interfaces

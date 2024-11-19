@@ -27,15 +27,15 @@ namespace SDKSimpleFactura.Services
                 Data = false
             };
         }
-        public async Task<Response<List<Dte>>?> ListadoDtesRecibidosAsync(ListaDteRequest request)
+        public async Task<Response<List<DteEnt>>?> ListadoDtesRecibidosAsync(ListaDteRequest request)
         {
             var url = "/documentsReceived";
-            var result = await _apiService.PostAsync<ListaDteRequest, Response<List<Dte>>>(url, request);
+            var result = await _apiService.PostAsync<ListaDteRequest, Response<List<DteEnt>>>(url, request);
             if (result.IsSuccess)
             {
                 return result.Data;
             }
-            return new Response<List<Dte>>
+            return new Response<List<DteEnt>>
             {
                 Status = result.StatusCode,
                 Message = result.Errores,

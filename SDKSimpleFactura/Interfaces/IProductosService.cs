@@ -1,5 +1,4 @@
-﻿using SDKSimpleFactura.Models.Productos;
-using SDKSimpleFactura.Models.Facturacion;
+﻿using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
 

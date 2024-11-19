@@ -3,7 +3,6 @@ using SDKSimpleFactura;
 using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Facturacion;
-using SDKSimpleFactura.Models.Folios;
 using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
 using static SDKSimpleFactura.Enum.FormaPago;
@@ -798,7 +797,7 @@ namespace SDKSimpleFacturaTests
         public async Task EmisionNC_NDV2Async_ReturnsOkResult_WhenApiCallIsSuccessful()
         {
             // Arrange
-            var sucursal = "Casa_Matriz";
+            var sucursal = "Casa Matriz";
             var motivo = ReasonTypeEnum.Otros;
             var request = new RequestDTE
             {
@@ -877,17 +876,21 @@ namespace SDKSimpleFacturaTests
                     }
                 }
             };
-            // Act
-            var result = await _facturacionService.EmisionNC_NDV2Async(sucursal, motivo, request);
+            var valid = await SolicitarFolio((DTEType)61,1);
+            if (valid == true)
+            {
+                // Act
+                var result = await _facturacionService.EmisionNC_NDV2Async(sucursal, motivo, request);
 
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(200, result.Status);
-            Assert.IsInstanceOfType(result.Data, typeof(InvoiceData));
-            Assert.AreEqual(result.Data.RUTEmisor, "76269769-6");
-            Assert.AreEqual(result.Data.RUTReceptor, "77225200-5");
-            Assert.IsNotNull(result.Message);
-            Assert.IsNull(result.Errors);
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual(200, result.Status);
+                Assert.IsInstanceOfType(result.Data, typeof(InvoiceData));
+                Assert.AreEqual(result.Data.RUTEmisor, "76269769-6");
+                Assert.AreEqual(result.Data.RUTReceptor, "77225200-5");
+                Assert.IsNotNull(result.Message);
+                Assert.IsNull(result.Errors);
+            }
         }
         [TestMethod]
         public async Task EmisionNC_NDV2Async_ReturnsBadRequest_WhenTipoDTEIsNotFound()

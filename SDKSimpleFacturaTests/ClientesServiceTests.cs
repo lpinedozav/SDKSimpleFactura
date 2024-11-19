@@ -1,6 +1,5 @@
 ﻿using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura;
-using SDKSimpleFactura.Models.Productos;
 using SDKSimpleFactura.Models.Facturacion;
 using Newtonsoft.Json;
 using SDKSimpleFactura.Models.Request;

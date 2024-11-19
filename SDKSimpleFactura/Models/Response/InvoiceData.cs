@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SDKSimpleFactura.Models.Facturacion
+namespace SDKSimpleFactura.Models.Response
 {
     public class InvoiceData
     {
