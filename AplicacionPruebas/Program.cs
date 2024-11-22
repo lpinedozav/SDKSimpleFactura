@@ -24,7 +24,37 @@ namespace AplicacionPruebas
             var Sucursal = clienteApi.Sucursal;
             var Folio = clienteApi.Folio;
             var Configuracion = clienteApi.Configuracion;
-            var BoletasHonorarios = clienteApi.BoletasHonorariosService;
+            var BoletasHonorarios = clienteApi.BoletasHonorarios;
+            //ACUSE
+            var request = new AcuseReciboExternoRequest()
+            {
+                Credenciales = new Credenciales()
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "77720532-3",
+                    NombreSucursal = "Casa Matriz"
+                },
+                DteReferenciadoExterno = new DteReferenciadoExterno
+                {
+                    Folio = 222,
+                    CodigoTipoDte = 33,
+                    Ambiente = 0
+                },
+                Respuesta = (ResponseType)5,
+                TipoRechazo = (RejectionType)1,
+                Comentario = "test"
+            };
+            try
+            {
+                var response = await Proveedores.AcuseReciboAsync(request);
+                Console.Write(response.ToString());
+                Console.WriteLine(response.Status);
+                Console.WriteLine(response.Data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Excepción: {ex.Message}");
+            }
             //ObtenerPDF 
             var solicitudPDF = new SolicitudDte
             {
