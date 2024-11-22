@@ -8,7 +8,7 @@ El **SDK SimpleFactura** es una solución en C# diseñada para facilitar la inte
 - Proporciona interfaces específicas para operaciones como:
   - **Facturación:** Generación y gestión de documentos tributarios electrónicos.
   - **Gestión de productos, proveedores y clientes.**
-  - **Configuración de sucursales y folios.**
+  - **Configuración y  gestión folios.**
   - **Emisión de boletas de honorarios.**
 - Compatible con aplicaciones en .NET Standard 2.0.
 
