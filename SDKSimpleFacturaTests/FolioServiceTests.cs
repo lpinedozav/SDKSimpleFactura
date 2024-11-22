@@ -61,28 +61,55 @@ namespace SDKSimpleFacturaTests
             Assert.IsNull(response.Errors);
         }
         [TestMethod]
-        public async Task SolicitarFoliosAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
+        public async Task SolicitarFoliosAsync_ReturnsOkResult_WhenFolioIsRequestedSuccessfully()
         {
-            //Arrange
-            var request = new FolioRequest
+            int maxIntentos = 3;
+            int intentoActual = 0;
+            bool exito = false;
+            Exception ultimaExcepcion = null;
+
+            while (intentoActual < maxIntentos && !exito)
             {
-                Credenciales = new Credenciales
+                intentoActual++;
+                try
                 {
-                    RutEmisor = "76269769-6",
-                    NombreSucursal = "Casa Matriz"
-                },
-                Cantidad = 1,
-                CodigoTipoDte = (DTEType)33
-            };
-            //Act
-            var result = await _folioService.SolicitarFoliosAsync(request);
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Status, 200);
-            Assert.IsNotNull(result.Data);
-            Assert.AreEqual(result.Data.CodigoSii, 33);
-            Assert.AreEqual(result.Message, $"El timbraje de tipo FACTURA ELECTRONICA con rangos desde {result.Data.Desde} hasta {result.Data.Hasta} fue ingresado correctamente");
-            Assert.IsNull(result.Errors);
+                    // Arrange
+                    var request = new FolioRequest
+                    {
+                        Credenciales = new Credenciales
+                        {
+                            RutEmisor = "76269769-6",
+                            NombreSucursal = "Casa Matriz"
+                        },
+                        Cantidad = 1,
+                        CodigoTipoDte = (DTEType)33
+                    };
+                    // Act
+                    var result = await _folioService.SolicitarFoliosAsync(request);
+                    // Assert
+                    Assert.IsNotNull(result);
+                    Assert.AreEqual(200, result.Status);
+                    Assert.IsNotNull(result.Data);
+                    Assert.AreEqual(33, result.Data.CodigoSii);
+                    Assert.AreEqual($"El timbraje de tipo FACTURA ELECTRONICA con rangos desde {result.Data.Desde} hasta {result.Data.Hasta} fue ingresado correctamente", result.Message);
+                    Assert.IsNull(result.Errors);
+
+                    exito = true;
+                }
+                catch (Exception ex)
+                {
+                    ultimaExcepcion = ex;
+                    if (intentoActual < maxIntentos)
+                    {
+                        await Task.Delay(1000);
+                    }
+                }
+            }
+
+            if (!exito)
+            {
+                Assert.Fail($"La prueba falló después de {maxIntentos} intentos. Último error: {ultimaExcepcion?.Message}");
+            }
         }
         [TestMethod]
         public async Task SolicitarFoliosAsync_ReturnsError_WhenApiCallIsFail()

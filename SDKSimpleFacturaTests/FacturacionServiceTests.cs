@@ -491,130 +491,170 @@ namespace SDKSimpleFacturaTests
         public async Task FacturacionIndividualV2ExportacionAsync_ReturnsOkResult_WhenInvoiceIsGeneratedSuccessfully()
         {
             //Arrange
-            var exportacion = new RequestDTE
+            
+            int maxIntentos = 3;
+            int intentoActual = 0;
+            bool exito = false;
+
+            Exception ultimaExcepcion = null;
+
+            while (intentoActual < maxIntentos && !exito)
             {
-                Exportaciones = new Exportaciones
+                intentoActual++;
+                try
                 {
-                    Encabezado = new Encabezado
+                    // Arrange
+                    var (success, folio) = await SolicitarFolio((DTEType)110, 1);
+                    if (success)
                     {
-                        IdDoc = new IdentificacionDTE
+                        var exportacion = new RequestDTE
                         {
-                            TipoDTE = (DTEType)110,
-                            FchEmis = DateTime.Now,
-                            FmaPago = (FormaPagoEnum)1,
-                            FchVenc = DateTime.Now.AddMonths(5)
-                        },
-                        Emisor = new Emisor
-                        {
-                            RUTEmisor = "76269769-6",
-                            RznSoc = "Chilesystems",
-                            GiroEmis = "Desarrollo de software",
-                            Telefono = new List<string> { "912345678" },
-                            CorreoEmisor = "mvega@chilesystems.com",
-                            Acteco = new List<int> { 620200 },
-                            DirOrigen = "Calle 7 numero 3",
-                            CmnaOrigen = "Santiago",
-                            CiudadOrigen = "Santiago"
-                        },
-                        Receptor = new Receptor
-                        {
-                            RUTRecep = "55555555-5",
-                            RznSocRecep = "CLIENTE INTERNACIONAL EXP IMP",
-                            Extranjero = new Extranjero
+                            Exportaciones = new Exportaciones
                             {
-                                NumId = "331-555555",
-                                Nacionalidad = (CodigosAduana.Paises)331
-                            },
-                            GiroRecep = "Giro de Cliente",
-                            CorreoRecep = "amamani@chilesystems.com",
-                            DirRecep = "Dirección de Cliente",
-                            CmnaRecep = "Comuna de Cliente",
-                            CiudadRecep = "Ciudad de Cliente"
-                        },
-                        Transporte = new Transporte
-                        {
-                            Aduana = new Aduana
-                            {
-                                CodModVenta = (CodigosAduana.ModalidadVenta)1,
-                                CodClauVenta = (CodigosAduana.ClausulaCompraVenta)5,
-                                TotClauVenta = 1984.65,
-                                CodViaTransp = (CodigosAduana.ViasdeTransporte)4,
-                                CodPtoEmbarque = (CodigosAduana.Puertos)901,
-                                CodPtoDesemb = (CodigosAduana.Puertos)262,
-                                Tara = 1,
-                                CodUnidMedTara = (CodigosAduana.UnidadMedida)10,
-                                PesoBruto = 10.65,
-                                CodUnidPesoBruto = (CodigosAduana.UnidadMedida)6,
-                                PesoNeto = 9.56,
-                                CodUnidPesoNeto = (CodigosAduana.UnidadMedida)6,
-                                TotBultos = 30,
-                                TipoBultos = new List<TipoBulto>
-                        {
-                            new TipoBulto
-                            {
-                                CodTpoBultos = (CodigosAduana.TipoBultoEnum)75,
-                                CantBultos = 30,
-                                IdContainer = "1-2",
-                                Sello = "1-3",
-                                EmisorSello = "CONTENEDOR"
-                            }
-                        },
-                                MntFlete = 965.1,
-                                MntSeguro = 10.25,
-                                CodPaisRecep = (CodigosAduana.Paises)224,
-                                CodPaisDestin = (CodigosAduana.Paises)224
-                            }
-                        },
-                        Totales = new Totales
-                        {
-                            TpoMoneda = (CodigosAduana.Moneda)13,
-                            MntExe = 1000,
-                            MntTotal = 1000
-                        },
-                        OtraMoneda = new OtraMoneda
-                        {
-                            TpoMoneda = (CodigosAduana.Moneda)200,
-                            TpoCambio = 800.36,
-                            MntExeOtrMnda = 45454.36,
-                            MntTotOtrMnda = 45454.36
-                        }
-                    },
-                    Detalle = new List<DetalleExportacion>
-                        {
-                            new DetalleExportacion
-                            {
-                                NroLinDet = 1,
-                                CdgItem = new List<CodigoItem>
+                                Encabezado = new Encabezado
                                 {
-                                    new CodigoItem
+                                    IdDoc = new IdentificacionDTE
                                     {
-                                        TpoCodigo = "INT1",
-                                        VlrCodigo = "39"
+                                        TipoDTE = (DTEType)110,
+                                        FchEmis = DateTime.Now,
+                                        FmaPago = (FormaPagoEnum)1,
+                                        FchVenc = DateTime.Now.AddMonths(5),
+                                        Folio = folio
+                                    },
+                                    Emisor = new Emisor
+                                    {
+                                        RUTEmisor = "76269769-6",
+                                        RznSoc = "Chilesystems",
+                                        GiroEmis = "Desarrollo de software",
+                                        Telefono = new List<string> { "912345678" },
+                                        CorreoEmisor = "mvega@chilesystems.com",
+                                        Acteco = new List<int> { 620200 },
+                                        DirOrigen = "Calle 7 numero 3",
+                                        CmnaOrigen = "Santiago",
+                                        CiudadOrigen = "Santiago"
+                                    },
+                                    Receptor = new Receptor
+                                    {
+                                        RUTRecep = "55555555-5",
+                                        RznSocRecep = "CLIENTE INTERNACIONAL EXP IMP",
+                                        Extranjero = new Extranjero
+                                        {
+                                            NumId = "331-555555",
+                                            Nacionalidad = (CodigosAduana.Paises)331
+                                        },
+                                        GiroRecep = "Giro de Cliente",
+                                        CorreoRecep = "amamani@chilesystems.com",
+                                        DirRecep = "Dirección de Cliente",
+                                        CmnaRecep = "Comuna de Cliente",
+                                        CiudadRecep = "Ciudad de Cliente"
+                                    },
+                                    Transporte = new Transporte
+                                    {
+                                        Aduana = new Aduana
+                                        {
+                                            CodModVenta = (CodigosAduana.ModalidadVenta)1,
+                                            CodClauVenta = (CodigosAduana.ClausulaCompraVenta)5,
+                                            TotClauVenta = 1984.65,
+                                            CodViaTransp = (CodigosAduana.ViasdeTransporte)4,
+                                            CodPtoEmbarque = (CodigosAduana.Puertos)901,
+                                            CodPtoDesemb = (CodigosAduana.Puertos)262,
+                                            Tara = 1,
+                                            CodUnidMedTara = (CodigosAduana.UnidadMedida)10,
+                                            PesoBruto = 10.65,
+                                            CodUnidPesoBruto = (CodigosAduana.UnidadMedida)6,
+                                            PesoNeto = 9.56,
+                                            CodUnidPesoNeto = (CodigosAduana.UnidadMedida)6,
+                                            TotBultos = 30,
+                                            TipoBultos = new List<TipoBulto>
+                                            {
+                                                new TipoBulto
+                                                {
+                                                    CodTpoBultos = (CodigosAduana.TipoBultoEnum)75,
+                                                    CantBultos = 30,
+                                                    IdContainer = "1-2",
+                                                    Sello = "1-3",
+                                                    EmisorSello = "CONTENEDOR"
+                                                }
+                                            },
+                                            MntFlete = 965.1,
+                                            MntSeguro = 10.25,
+                                            CodPaisRecep = (CodigosAduana.Paises)224,
+                                            CodPaisDestin = (CodigosAduana.Paises)224
+                                        }
+                                    },
+                                    Totales = new Totales
+                                    {
+                                        TpoMoneda = (CodigosAduana.Moneda)13,
+                                        MntExe = 1000,
+                                        MntTotal = 1000
+                                    },
+                                    OtraMoneda = new OtraMoneda
+                                    {
+                                        TpoMoneda = (CodigosAduana.Moneda)200,
+                                        TpoCambio = 800.36,
+                                        MntExeOtrMnda = 45454.36,
+                                        MntTotOtrMnda = 45454.36
                                     }
                                 },
-                                IndExe = (IndicadorFacturacionExencionEnum)1,
-                                NmbItem = "CHATARRA DE ALUMINIO",
-                                DscItem = "OPCIONAL",
-                                QtyItem = 1,
-                                UnmdItem = "U",
-                                PrcItem = 1000,
-                                MontoItem = 1000
-                            }
-                        }
-                },
-                Observaciones = "NOTA AL PIE DE PAGINA"
-            };
-            string sucursalExportacion = "Casa Matriz";
-            // Act
-            var result = await _facturacionService.FacturacionIndividualV2ExportacionAsync(sucursalExportacion, exportacion);
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(200, result.Status);
-            Assert.IsInstanceOfType(result.Data, typeof(InvoiceData));
-            Assert.AreEqual(result.Data.RUTEmisor, "76269769-6");
-            Assert.AreEqual(result.Data.RUTReceptor, "55555555-5");
-            Assert.IsNotNull(result.Message);
-            Assert.IsNull(result.Errors);
+                                Detalle = new List<DetalleExportacion>
+                                {
+                                    new DetalleExportacion
+                                    {
+                                        NroLinDet = 1,
+                                        CdgItem = new List<CodigoItem>
+                                        {
+                                            new CodigoItem
+                                            {
+                                                TpoCodigo = "INT1",
+                                                VlrCodigo = "39"
+                                            }
+                                        },
+                                        IndExe = (IndicadorFacturacionExencionEnum)1,
+                                        NmbItem = "CHATARRA DE ALUMINIO",
+                                        DscItem = "OPCIONAL",
+                                        QtyItem = 1,
+                                        UnmdItem = "U",
+                                        PrcItem = 1000,
+                                        MontoItem = 1000
+                                    }
+                                }
+                            },
+                            Observaciones = "NOTA AL PIE DE PAGINA"
+                        };
+                        string sucursalExportacion = "Casa Matriz";
+
+                        // Act
+                        var result = await _facturacionService.FacturacionIndividualV2ExportacionAsync(sucursalExportacion, exportacion);
+
+                        // Assert
+                        Assert.IsNotNull(result);
+                        Assert.AreEqual(200, result.Status);
+                        Assert.IsInstanceOfType(result.Data, typeof(InvoiceData));
+                        Assert.AreEqual("76269769-6", result.Data.RUTEmisor);
+                        Assert.AreEqual("55555555-5", result.Data.RUTReceptor);
+                        Assert.IsNotNull(result.Message);
+                        Assert.IsNull(result.Errors);
+
+                        exito = true;
+                    }
+                    else
+                    {
+                        throw new Exception("Error: Sin folios");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ultimaExcepcion = ex;
+                    if (intentoActual < maxIntentos)
+                    {
+                        await Task.Delay(1000);
+                    }
+                }
+            }
+            if (!exito)
+            {
+                Assert.Fail($"La prueba falló después de {maxIntentos} intentos. Último error: {ultimaExcepcion.Message}");
+            }
         }
         [TestMethod]
         public async Task FacturacionIndividualV2ExportacionAsync_ReturnsError_WhenRutEmisorIsNotFound()
@@ -774,7 +814,7 @@ namespace SDKSimpleFacturaTests
             // Arrange
             var credenciales = new Credenciales
             {
-                RutEmisor = "76269769-6",
+                RutEmisor = "0",
                 NombreSucursal = "Casa Matriz"
             };
 
@@ -785,111 +825,148 @@ namespace SDKSimpleFacturaTests
 
             // Assert
             Assert.IsNotNull(result);
-            var response = JsonConvert.DeserializeObject<Response<string>>(result.Message);
+            var response = JsonConvert.DeserializeObject<Response<bool>>(result.Message);
             Assert.IsNotNull(response);
-            Assert.AreEqual(500, response.Status);
+            Assert.AreEqual(400, response.Status);
             Assert.IsNull(response.Message);
-            Assert.AreEqual("Error al facturar masivamente desde api", response.Data);
+            Assert.IsFalse(response.Data);
             Assert.IsNotNull(response.Errors);
-            CollectionAssert.Contains(response.Errors, "Object reference not set to an instance of an object.");
+            CollectionAssert.Contains(response.Errors, "Rut de emisor 0 no valido");
         }
         [TestMethod]
         public async Task EmisionNC_NDV2Async_ReturnsOkResult_WhenApiCallIsSuccessful()
         {
-            // Arrange
-            var sucursal = "Casa Matriz";
-            var motivo = ReasonTypeEnum.Otros;
-            var request = new RequestDTE
+            int maxIntentos = 3;
+            int intentoActual = 0;
+            bool exito = false;
+
+            Exception ultimaExcepcion = null;
+
+            while (intentoActual < maxIntentos && !exito)
             {
-                Documento = new Documento
+                intentoActual++;
+                try
                 {
-                    Encabezado = new Encabezado
+                    // Arrange
+                    var (success, folio) = await SolicitarFolio((DTEType)61, 1);
+                    if (success)
                     {
-                        IdDoc = new IdentificacionDTE
+                        var request = new RequestDTE
                         {
-                            TipoDTE = (DTEType)61,
-                            FchEmis = DateTime.Now,
-                            FmaPago = (FormaPagoEnum)2,
-                            FchVenc = DateTime.Now.AddMonths(6)
-                        },
-                        Emisor = new Emisor
-                        {
-                            RUTEmisor = "76269769-6",
-                            RznSoc = "SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
-                            GiroEmis = "Desarrollo de software",
-                            Telefono = new List<string> { "912345678" },
-                            CorreoEmisor = "felipe.anzola@erke.cl",
-                            Acteco = new List<int> { 620900 },
-                            DirOrigen = "Chile",
-                            CmnaOrigen = "Chile",
-                            CiudadOrigen = "Chile"
-                        },
-                        Receptor = new Receptor
-                        {
-                            RUTRecep = "77225200-5",
-                            RznSocRecep = "ARRENDADORA DE VEHÍCULOS S.A.",
-                            GiroRecep = "451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
-                            CorreoRecep = "terceros-77225200@dte.iconstruye.com",
-                            DirRecep = "Rondizzoni 2130",
-                            CmnaRecep = "SANTIAGO",
-                            CiudadRecep = "SANTIAGO"
-                        },
-                        Totales = new Totales
-                        {
-                            MntNeto = 6930000.0,
-                            TasaIVA = 19,
-                            IVA = 1316700,
-                            MntTotal = 8246700.0
-                        }
-                    },
-                    Detalle = new List<Detalle>
-                    {
-                        new Detalle
-                        {
-                            NroLinDet = 1,
-                            NmbItem = "CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
-                            CdgItem = new List<CodigoItem>
+                            Documento = new Documento
                             {
-                                new CodigoItem
+                                Encabezado = new Encabezado
                                 {
-                                    TpoCodigo = "4",
-                                    VlrCodigo = "EVO_2"
+                                    IdDoc = new IdentificacionDTE
+                                    {
+                                        TipoDTE = (DTEType)61,
+                                        FchEmis = DateTime.Now,
+                                        FmaPago = (FormaPagoEnum)2,
+                                        FchVenc = DateTime.Now.AddMonths(6),
+                                        Folio = folio
+                                    },
+                                    Emisor = new Emisor
+                                    {
+                                        RUTEmisor = "76269769-6",
+                                        RznSoc = "SERVICIOS INFORMATICOS CHILESYSTEMS EIRL",
+                                        GiroEmis = "Desarrollo de software",
+                                        Telefono = new List<string> { "912345678" },
+                                        CorreoEmisor = "felipe.anzola@erke.cl",
+                                        Acteco = new List<int> { 620900 },
+                                        DirOrigen = "Chile",
+                                        CmnaOrigen = "Chile",
+                                        CiudadOrigen = "Chile"
+                                    },
+                                    Receptor = new Receptor
+                                    {
+                                        RUTRecep = "77225200-5",
+                                        RznSocRecep = "ARRENDADORA DE VEHÍCULOS S.A.",
+                                        GiroRecep = "451001 - VENTA AL POR MAYOR DE VEHÍCULOS AUTOMOTORES",
+                                        CorreoRecep = "terceros-77225200@dte.iconstruye.com",
+                                        DirRecep = "Rondizzoni 2130",
+                                        CmnaRecep = "SANTIAGO",
+                                        CiudadRecep = "SANTIAGO"
+                                    },
+                                    Totales = new Totales
+                                    {
+                                        MntNeto = 6930000.0,
+                                        TasaIVA = 19,
+                                        IVA = 1316700,
+                                        MntTotal = 8246700.0
+                                    }
+                                },
+                                Detalle = new List<Detalle>
+                                {
+                                    new Detalle
+                                    {
+                                        NroLinDet = 1,
+                                        NmbItem = "CERRADURA DE SEGURIDAD (2PIEZA).SATURN EVO",
+                                        CdgItem = new List<CodigoItem>
+                                        {
+                                            new CodigoItem
+                                            {
+                                                TpoCodigo = "4",
+                                                VlrCodigo = "EVO_2"
+                                            }
+                                        },
+                                        QtyItem = 42.0,
+                                        UnmdItem = "unid",
+                                        PrcItem = 319166.0,
+                                        MontoItem = 6930000
+                                    }
+                                },
+                                Referencia = new List<Referencia>
+                                {
+                                    new Referencia
+                                    {
+                                        NroLinRef = 1,
+                                        TpoDocRef = "61",
+                                        FolioRef = "1268",
+                                        FchRef = DateTime.Parse("2024-10-17"),
+                                        CodRef = (TipoReferencia.TipoReferenciaEnum)1,
+                                        RazonRef = "Anular"
+                                    }
                                 }
-                            },
-                            QtyItem = 42.0,
-                            UnmdItem = "unid",
-                            PrcItem = 319166.0,
-                            MontoItem = 6930000
-                        }
-                    },
-                    Referencia = new List<Referencia>
+                            }
+                        };
+                        var sucursal = "Casa Matriz";
+                        var motivo = ReasonTypeEnum.Otros;
+                        // Act
+                        var result = await _facturacionService.EmisionNC_NDV2Async(sucursal, motivo, request);
+
+                        // Assert
+                        Assert.IsNotNull(result);
+                        Assert.AreEqual(200, result.Status);
+                        Assert.IsInstanceOfType(result.Data, typeof(InvoiceData));
+                        Assert.AreEqual(result.Data.RUTEmisor, "76269769-6");
+                        Assert.AreEqual(result.Data.RUTReceptor, "77225200-5");
+                        Assert.IsNotNull(result.Message);
+                        Assert.IsNull(result.Errors);
+
+                        // Si todo salió bien, marcamos exito como verdadero para salir del bucle
+                        exito = true;
+                    }
+                    else
                     {
-                        new Referencia
-                        {
-                            NroLinRef = 1,
-                            TpoDocRef = "61",
-                            FolioRef = "1268",
-                            FchRef = DateTime.Parse("2024-10-17"),
-                            CodRef = (TipoReferencia.TipoReferenciaEnum)1,
-                            RazonRef = "Anular"
-                        }
+                        throw new Exception("Error: Sin folios");
                     }
                 }
-            };
-            var valid = await SolicitarFolio((DTEType)61,1);
-            if (valid == true)
-            {
-                // Act
-                var result = await _facturacionService.EmisionNC_NDV2Async(sucursal, motivo, request);
+                catch (Exception ex)
+                {
+                    ultimaExcepcion = ex;
 
-                // Assert
-                Assert.IsNotNull(result);
-                Assert.AreEqual(200, result.Status);
-                Assert.IsInstanceOfType(result.Data, typeof(InvoiceData));
-                Assert.AreEqual(result.Data.RUTEmisor, "76269769-6");
-                Assert.AreEqual(result.Data.RUTReceptor, "77225200-5");
-                Assert.IsNotNull(result.Message);
-                Assert.IsNull(result.Errors);
+                    // Si no hemos alcanzado el máximo de intentos, esperamos antes de reintentar
+                    if (intentoActual < maxIntentos)
+                    {
+                        await Task.Delay(1000); // Espera 1 segundo antes de reintentar (opcional)
+                    }
+                }
+            }
+
+            // Si después de los intentos no se tuvo éxito, fallamos la prueba
+            if (!exito)
+            {
+                Assert.Fail($"La prueba falló después de {maxIntentos} intentos. Último error: {ultimaExcepcion.Message}");
             }
         }
         [TestMethod]
@@ -1188,7 +1265,7 @@ namespace SDKSimpleFacturaTests
             Assert.IsNull(result.Errors);
         }
 
-        private async Task<bool?> SolicitarFolio(DTEType tipo, int cantidad)
+        private async Task<(bool success, int folio)> SolicitarFolio(DTEType tipo, int cantidad)
         {
             //probar
             var request = new FolioRequest
@@ -1204,9 +1281,9 @@ namespace SDKSimpleFacturaTests
             var result = await _folioService.SolicitarFoliosAsync(request);
             if (result?.Status == 200)
             {
-                return true;
+                return (true,result.Data.Desde);
             }
-            return false;
+            return (false, 0);
 
         }
     }

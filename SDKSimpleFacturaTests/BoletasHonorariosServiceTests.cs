@@ -18,7 +18,7 @@ namespace SDKSimpleFacturaTests
             string username = Configuracion.Usuario;
             string password = Configuracion.Contrasena;
             _simpleFacturaClient = new SimpleFacturaClient(username, password);
-            _boletasHonorarioService = _simpleFacturaClient.BoletasHonorariosService;
+            _boletasHonorarioService = _simpleFacturaClient.BoletasHonorarios;
         }
         [TestMethod]
         public async Task ObtenerPDFBHEEmitidaAsync_RetunsOkResult_WhenApiCallIsSuccessfully()
