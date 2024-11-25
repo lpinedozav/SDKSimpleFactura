@@ -124,7 +124,7 @@ namespace SDKSimpleFacturaTests
                 Credenciales = new Credenciales
                 {
                     RutEmisor = "76269769-6",
-                    RutContribuyente = "26671002-K"
+                    RutContribuyente = "26429782-6"
                 },
                 Folio = 2
             };
