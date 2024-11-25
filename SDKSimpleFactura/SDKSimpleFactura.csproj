@@ -13,6 +13,7 @@
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>https://github.com/lpinedozav/SDKSimpleFactura</RepositoryUrl>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <PackageIcon>simplefactura-icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +23,14 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
+	<ItemGroup>
+		<None Update="simplefactura-icon.png">
+			<Pack>true</Pack>
+			<PackagePath>simplefactura-icon.png</PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
