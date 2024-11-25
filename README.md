@@ -76,6 +76,6 @@ class Program
 ### Documentación
 La documentación relevante para usar este SDK es:
 
-- Documentación general:
+- Sitio oficial:
   [Sitio Simple Factura](https://www.simplefactura.cl/).
 - Documentacion de APIs [Postman](https://documentacion.simplefactura.cl/).
