@@ -50,6 +50,28 @@ dotnet add package SDKSimpleFactura
 4. Clic en la pestaña Examinar y busque `SDKSimpleFactura`
 5. Clic en el paquete `SDKSimpleFactura`, seleccione la versión que desea utilizar y finalmente selecciones instalar.
 
+
+### Configuración de la URL de la API
+Para usar el SDK, asegúrate de configurar la URL base de la API en tu archivo de configuración. Este es un ejemplo de cómo configurarlo en `appsettings.json`:
+```ruby
+{
+  "ApiSettings": {
+    "BaseUrl": "https://api.simplefactura.cl"
+  }
+}
+```
+### Configuración del archivo `appsettings.json`
+Para garantizar que el archivo `appsettings.json` esté disponible en tiempo de ejecución, debes configurar las propiedades del archivo en Visual Studio de la siguiente manera:
+
+1. Haz clic derecho en el archivo appsettings.json en el Explorador de Soluciones.
+2. Selecciona Propiedades.
+3. En la ventana de propiedades, establece:
+   - **Copiar en el directorio de salida:** Copiar siempre.
+  
+
+Esto asegurará que el archivo appsettings.json se copie al directorio de salida (bin) durante la compilación.
+
+
 ### Cómo empezar
 Para utilizar el SDK, simplemente inicializa la clase SimpleFacturaClient proporcionando tu nombre de usuario y contraseña:
 ```ruby
