@@ -83,7 +83,7 @@ class Program
 {
     static void Main()
     {
-        var SimpleFacturaClient = new SimpleFacturaClient("usuario", "contraseña");
+        var SimpleFacturaClient = new SimpleFacturaClient();
         // Ejemplo: Uso de los servicios
         var facturacionService = SimpleFacturaClient.Facturacion;
         var productosService = SimpleFacturaClient.Productos;
