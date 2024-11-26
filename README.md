@@ -51,11 +51,13 @@ dotnet add package SDKSimpleFactura
 5. Clic en el paquete `SDKSimpleFactura`, seleccione la versión que desea utilizar y finalmente selecciones instalar.
 
 
-### Configuración de la URL de la API
-Para usar el SDK, asegúrate de configurar la URL base de la API en tu archivo de configuración. Este es un ejemplo de cómo configurarlo en `appsettings.json`:
+### Configuración de SDK
+Para usar el SDK, asegúrate de configurar tus credenciales y la URL base de la API en tu archivo de configuración. Este es un ejemplo de cómo configurarlo en `appsettings.json`:
 ```ruby
 {
-  "ApiSettings": {
+  "SDKSettings": {
+    "Username": "demo@chilesystems.com",
+    "Password": "Rv8Il4eV",
     "BaseUrl": "https://api.simplefactura.cl"
   }
 }
