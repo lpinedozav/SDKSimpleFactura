@@ -9,7 +9,7 @@ namespace SDKSimpleFactura
 {
     public static class DependencyInjectionConfig
     {
-        public static ServiceProvider ConfigureServices(string username, string password)
+        public static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
 
@@ -23,8 +23,9 @@ namespace SDKSimpleFactura
             services.AddHttpClient<IApiService, ApiService>(client =>
             {
                 client.Timeout = TimeSpan.FromMinutes(5);
-                client.BaseAddress = new Uri(configuration["ApiSettings:BaseUrl"]);
-
+                client.BaseAddress = new Uri(configuration["SDKSettings:BaseUrl"]);
+                var username = configuration["SDKSettings:Username"];
+                var password = configuration["SDKSettings:Password"];
                 var authToken = Encoding.ASCII.GetBytes($"{username}:{password}");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authToken));
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

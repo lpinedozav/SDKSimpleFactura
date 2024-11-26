@@ -5,11 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <PackageId>SDKSimpleFactura</PackageId>
-	  <Version>1.0.1</Version>
+	  <Version>1.0.2</Version>
 	  <Authors>Luis Pinedo Zavala</Authors>
 	  <Company>ChileSystems</Company>
 	  <Description>SDK para integración con SimpleFactura desarrollado para ChileSystems.</Description>
-	  <PackageTags>SDK;SimpleFactura;API</PackageTags>
+	  <PackageTags>SDK;SimpleFactura;API;Factura;Boleta;Impuestos;Factura Electrónico;Documento tributario electrónico;SII</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>https://github.com/lpinedozav/SDKSimpleFactura</RepositoryUrl>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

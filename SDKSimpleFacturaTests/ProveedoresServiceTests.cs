@@ -16,15 +16,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            string username = Configuracion.Usuario;
-            string password = Configuracion.Contrasena;
-            _simpleFacturaClient = new SimpleFacturaClient(username, password);
+            _simpleFacturaClient = new SimpleFacturaClient();
             _proveedoresService = _simpleFacturaClient.Proveedores;
-        }
-        [TestMethod]//sinhacer
-        public async Task AcuseReciboAsync_ReturnsOkResult()
-        {
-
         }
         [TestMethod]
         public async Task AcuseReciboAsync_ReturnsBadRequest_WhenApiCallIsFail()

@@ -14,9 +14,9 @@ namespace SDKSimpleFactura
         public IConfiguracionService Configuracion { get; }
         public IBoletasHonorariosService BoletasHonorarios { get; }
 
-        public SimpleFacturaClient(string username, string password)
+        public SimpleFacturaClient()
         {
-            var serviceProvider = DependencyInjectionConfig.ConfigureServices(username, password);
+            var serviceProvider = DependencyInjectionConfig.ConfigureServices();
 
             Facturacion = serviceProvider.GetRequiredService<IFacturacionService>();
             Productos = serviceProvider.GetRequiredService<IProductosService>();

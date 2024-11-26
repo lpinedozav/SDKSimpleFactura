@@ -17,9 +17,7 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            string username = Configuracion.Usuario;
-            string password = Configuracion.Contrasena;
-            _simpleFacturaClient = new SimpleFacturaClient(username, password);
+            _simpleFacturaClient = new SimpleFacturaClient();
             _folioService = _simpleFacturaClient.Folio;
         }
         [TestMethod]
