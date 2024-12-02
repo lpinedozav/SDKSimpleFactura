@@ -1,4 +1,5 @@
-﻿using SDKSimpleFactura.Enum;
+﻿using System;
+using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Models.Facturacion;
 using static SDKSimpleFactura.Enum.Ambiente;
 using static SDKSimpleFactura.Enum.TipoDTE;

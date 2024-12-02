@@ -6,7 +6,10 @@ using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
 using System.Net.Http.Headers;
 using System.Text;
-
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 namespace SDKSimpleFactura.Services
 {
     public class FacturacionService : IFacturacionService

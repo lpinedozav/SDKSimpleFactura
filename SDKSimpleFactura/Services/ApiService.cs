@@ -2,6 +2,8 @@
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Response;
 using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SDKSimpleFactura.Services
 {

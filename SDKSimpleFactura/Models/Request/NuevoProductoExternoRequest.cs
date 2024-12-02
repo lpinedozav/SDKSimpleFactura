@@ -1,4 +1,6 @@
-﻿namespace SDKSimpleFactura.Models.Request
+﻿using System;
+using System.Collections.Generic;
+namespace SDKSimpleFactura.Models.Request
 {
     public class ProductoExternoEnt
     {

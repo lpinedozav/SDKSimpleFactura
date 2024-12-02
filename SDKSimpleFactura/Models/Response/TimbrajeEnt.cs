@@ -1,4 +1,5 @@
-﻿using SDKSimpleFactura.Helpers;
+﻿using System;
+using SDKSimpleFactura.Helpers;
 
 namespace SDKSimpleFactura.Models.Response
 {

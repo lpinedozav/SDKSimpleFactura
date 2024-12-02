@@ -1,5 +1,5 @@
 ﻿using SDKSimpleFactura.Helpers;
-using System.Xml.Serialization;
+using System;
 
 namespace SDKSimpleFactura.Models.Facturacion
 {

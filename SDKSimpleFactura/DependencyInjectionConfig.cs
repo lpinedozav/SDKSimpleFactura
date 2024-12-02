@@ -4,6 +4,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Services;
+using System;
+using System.IO;
 
 namespace SDKSimpleFactura
 {

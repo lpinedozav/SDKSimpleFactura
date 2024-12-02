@@ -1,4 +1,6 @@
-﻿using SDKSimpleFactura.Models.Response;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
+using SDKSimpleFactura.Models.Response;
 
 namespace SDKSimpleFactura.Interfaces
 {

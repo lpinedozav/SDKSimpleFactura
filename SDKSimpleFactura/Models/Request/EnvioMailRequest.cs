@@ -1,4 +1,5 @@
-﻿namespace SDKSimpleFactura.Models.Request
+﻿using System.Collections.Generic;
+namespace SDKSimpleFactura.Models.Request
 {
     public class EnvioMailRequest
     {

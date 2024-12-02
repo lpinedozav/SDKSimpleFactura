@@ -1,5 +1,5 @@
 ﻿using System.Xml.Serialization;
-
+using System;
 namespace SDKSimpleFactura.Enum
 {
     public static class EstadoRecepcionDTE

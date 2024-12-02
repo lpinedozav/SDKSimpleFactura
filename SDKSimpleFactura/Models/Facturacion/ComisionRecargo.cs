@@ -1,5 +1,5 @@
 ﻿using SDKSimpleFactura.Helpers;
-
+using System;
 namespace SDKSimpleFactura.Models.Facturacion
 {
     public class ComisionRecargo

@@ -1,4 +1,6 @@
-﻿using SDKSimpleFactura.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using SDKSimpleFactura.Helpers;
 namespace SDKSimpleFactura.Models.Facturacion
 {
     public class Aduana

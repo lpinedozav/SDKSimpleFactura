@@ -1,4 +1,6 @@
-﻿using SDKSimpleFactura.Models.Facturacion;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;

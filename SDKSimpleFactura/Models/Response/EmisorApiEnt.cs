@@ -1,4 +1,6 @@
-﻿namespace SDKSimpleFactura.Models.Response
+﻿using System;
+using System.Collections.Generic;
+namespace SDKSimpleFactura.Models.Response
 {
     public class EmisorApiEnt
     {

@@ -1,6 +1,6 @@
 ﻿using SDKSimpleFactura.Enum;
 using SDKSimpleFactura.Models.Facturacion;
-
+using System;
 namespace SDKSimpleFactura.Models.Request
 {
     public class RequestDTE

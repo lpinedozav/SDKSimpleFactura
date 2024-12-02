@@ -1,7 +1,7 @@
 ﻿using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Response;
-
+using System.Threading.Tasks;
 namespace SDKSimpleFactura.Services
 {
     public class ConfiguracionService : IConfiguracionService

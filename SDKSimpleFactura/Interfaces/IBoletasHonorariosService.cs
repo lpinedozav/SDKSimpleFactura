@@ -1,6 +1,7 @@
-﻿using SDKSimpleFactura.Models.Request;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
-
 namespace SDKSimpleFactura.Interfaces
 {
     public interface IBoletasHonorariosService

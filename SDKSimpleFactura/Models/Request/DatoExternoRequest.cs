@@ -1,4 +1,5 @@
-﻿using SDKSimpleFactura.Models.Facturacion;
+﻿using System.Collections.Generic;
+using SDKSimpleFactura.Models.Facturacion;
 
 namespace SDKSimpleFactura.Models.Request
 {

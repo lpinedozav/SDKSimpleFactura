@@ -1,4 +1,5 @@
-﻿namespace SDKSimpleFactura.Helpers
+﻿using System;
+namespace SDKSimpleFactura.Helpers
 {
     public static class StringHelper
     {

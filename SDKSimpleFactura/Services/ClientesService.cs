@@ -2,6 +2,8 @@
 using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace SDKSimpleFactura.Services
 {
     public class ClientesService : IClientesService
