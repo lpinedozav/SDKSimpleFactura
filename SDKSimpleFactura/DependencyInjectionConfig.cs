@@ -22,16 +22,26 @@ namespace SDKSimpleFactura
 
             services.AddSingleton<IConfiguration>(configuration);
 
+            var baseUrl = configuration["SDKSettings:BaseUrl"];
+
+            // Registrar AuthenticationService con la misma base URL
+            services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
+
+            // Registrar DelegatingHandler
+            services.AddTransient<AuthenticationDelegatingHandler>();
+
+            // Registrar ApiService con DelegatingHandler y configurar la base URL
             services.AddHttpClient<IApiService, ApiService>(client =>
             {
                 client.Timeout = TimeSpan.FromMinutes(5);
-                client.BaseAddress = new Uri(configuration["SDKSettings:BaseUrl"]);
-                var username = configuration["SDKSettings:Username"];
-                var password = configuration["SDKSettings:Password"];
-                var authToken = Encoding.ASCII.GetBytes($"{username}:{password}");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authToken));
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            });
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            })
+            .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
+
 
             services.AddTransient<IFacturacionService, FacturacionService>();
             services.AddTransient<IProductosService, ProductosService>();

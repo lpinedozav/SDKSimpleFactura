@@ -5,13 +5,14 @@
     <Nullable>enable</Nullable>
 	  <LangVersion>8.0</LangVersion>
 	  <PackageId>SDKSimpleFactura</PackageId>
-	  <Version>1.0.3</Version>
+	  <Version>1.0.4</Version>
 	  <Authors>Luis Pinedo Zavala</Authors>
 	  <Company>ChileSystems</Company>
 	  <Description>SDK para integración con SimpleFactura desarrollado para ChileSystems.</Description>
-	  <PackageTags>SDK;SimpleFactura;API;Factura;Boleta;Impuestos;Factura Electrónico;Documento tributario electrónico;SII</PackageTags>
+	  <PackageTags>SDK;SimpleFactura;API;Factura;Boleta;Impuestos;FacturaElectrónico;DocumentoTributarioElectrónico;SII</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>https://github.com/lpinedozav/SDKSimpleFactura</RepositoryUrl>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageIcon>simplefactura-icon.png</PackageIcon>
   </PropertyGroup>
@@ -20,8 +21,9 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="3.1.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="simplefactura-icon.png">

@@ -1229,7 +1229,7 @@ namespace SDKSimpleFacturaTests
             CollectionAssert.Contains(response.Errors, "Rut de empresa vacio");
         }
         [TestMethod]
-        public async Task ConsolidadoEmitidosAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
+        public async Task ConciliarEmitidosAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
         {
             //Arrange
             var credencialesConsolidado = new Credenciales
@@ -1237,7 +1237,7 @@ namespace SDKSimpleFacturaTests
                 RutEmisor = "76269769-6"
             };
             //Act
-            var result = await _facturacionService.ConsolidadoEmitidosAsync(credencialesConsolidado,5,2024);
+            var result = await _facturacionService.ConciliarEmitidosAsync(credencialesConsolidado,5,2024);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Status, 200);
@@ -1246,7 +1246,7 @@ namespace SDKSimpleFacturaTests
             Assert.IsNull(result.Errors);
         }
         [TestMethod]
-        public async Task ConsolidadoEmitidosAsync_ReturnsBadRequest_WhenApiCallQuotaExcceeded()
+        public async Task ConciliarEmitidosAsync_ReturnsBadRequest_WhenApiCallQuotaExcceeded()
         {
             //Arrange
             var credencialesConsolidado = new Credenciales
@@ -1254,7 +1254,7 @@ namespace SDKSimpleFacturaTests
                 //RutEmisor = "76269769-6"
             };
             //Act
-            var result = await _facturacionService.ConsolidadoEmitidosAsync(credencialesConsolidado, 5, 2024);
+            var result = await _facturacionService.ConciliarEmitidosAsync(credencialesConsolidado, 5, 2024);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Status, 500);

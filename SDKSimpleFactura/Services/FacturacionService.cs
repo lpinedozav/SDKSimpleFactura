@@ -227,7 +227,7 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
-        public async Task<Response<string>?> ConsolidadoEmitidosAsync(Credenciales credenciales, int mes, int anio)
+        public async Task<Response<string>?> ConciliarEmitidosAsync(Credenciales credenciales, int mes, int anio)
         {
             var url = $"/documentsIssued/consolidate/{mes}/{anio}";
             var result = await _apiService.PostAsync<Credenciales, Response<string>>(url, credenciales);
