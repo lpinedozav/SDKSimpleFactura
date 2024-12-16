@@ -22,5 +22,6 @@ namespace SDKSimpleFactura.Interfaces
         Task<Response<bool>> EnvioMailAsync(EnvioMailRequest request);
         Task<Response<List<ReporteDTE>>> ConsolidadoVentasAsync(ListaDteRequest request);
         Task<Response<string>> ConciliarEmitidosAsync(Credenciales credenciales, int mes, int anio);
+        Task<Response<List<TrazasEnt>>> GetTrazasEmitidosAsync(SolicitudDte request);
     }
 }
