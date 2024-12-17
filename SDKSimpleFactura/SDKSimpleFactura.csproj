@@ -13,7 +13,6 @@
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>https://github.com/lpinedozav/SDKSimpleFactura</RepositoryUrl>
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageIcon>simplefactura-icon.png</PackageIcon>
   </PropertyGroup>
 
