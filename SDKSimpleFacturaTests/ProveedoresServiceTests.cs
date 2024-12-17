@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using SDKSimpleFactura;
 using static SDKSimpleFactura.Enum.TipoDTE;
 using SDKSimpleFactura.Models.Response;
+using SDKSimpleFactura.Services;
 namespace SDKSimpleFacturaTests
 {
     [TestClass]
@@ -229,6 +230,60 @@ namespace SDKSimpleFacturaTests
             Assert.IsTrue(result.Message.Contains("Rut de emisor vacio"));
             Assert.IsNull(result.Data);
             Assert.IsNull(result.Errors);
+        }
+        [TestMethod]
+        public async Task GetTrazasRecibidosAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
+        {
+            //Arrange
+            var request = new SolicitudDte()
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "76269769-6"
+                },
+                DteReferenciadoExterno = new DteReferenciadoExterno
+                {
+                    Folio = 2232,
+                    CodigoTipoDte = 33,
+                    Ambiente = 0
+                }
+            };
+            //Act
+            var result = await _proveedoresService.GetTrazasRecibidosAsync(request);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Status, 200);
+            Assert.IsNull(result.Message);
+            Assert.IsTrue(result.Data.Count() >= 0);
+            Assert.IsTrue(result.Errors.Count() == 0);
+        }
+        [TestMethod]
+        public async Task GetTrazasRecibidosAsync_ReturnsError_WhenApiCallFails()
+        {
+            //Arrange
+            var request = new SolicitudDte()
+            {
+                Credenciales = new Credenciales
+                {
+                    RutEmisor = "76269769-6",
+                    RutContribuyente = "76269769-6"
+                },
+                DteReferenciadoExterno = new DteReferenciadoExterno
+                {
+                    Folio = 0,
+                    CodigoTipoDte = 33,
+                    Ambiente = 0
+                }
+            };
+            //Act
+            var result = await _proveedoresService.GetTrazasRecibidosAsync(request);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Status, 500);
+            Assert.IsNotNull(result.Message);
+            Assert.IsTrue(result.Message.Contains("Error al obtener trazas del documento"));
+            Assert.IsNull(result.Data);
         }
     }
 }

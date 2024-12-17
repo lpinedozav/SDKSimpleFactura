@@ -13,5 +13,6 @@ namespace SDKSimpleFactura.Interfaces
         Task<Response<byte[]>?> ObtenerXmlAsync(ListaDteRequest request);
         Task<Response<byte[]>> ObtenerPDFAsync(ListaDteRequest request);
         Task<Response<string>?> ConciliarRecibidosAsync(Credenciales credenciales, int mes, int anio);
+        Task<Response<List<TrazasEnt>>> GetTrazasRecibidosAsync(SolicitudDte request);
     }
 }

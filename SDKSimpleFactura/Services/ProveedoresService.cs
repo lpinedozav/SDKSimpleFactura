@@ -93,5 +93,20 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<List<TrazasEnt>>> GetTrazasRecibidosAsync(SolicitudDte request)
+        {
+            var url = $"/dte/trazasReceived";
+            var result = await _apiService.PostAsync<SolicitudDte, Response<List<TrazasEnt>>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<List<TrazasEnt>>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
     }
 }
