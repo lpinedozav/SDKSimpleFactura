@@ -125,5 +125,42 @@ namespace SDKSimpleFacturaTests
             Assert.IsFalse(response.Data);
             CollectionAssert.Contains(response.Errors, "Rut de emisor vacio");
         }
+        [TestMethod]
+        public async Task ClientXRutAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
+        {
+            //Arrange
+            var request = new Credenciales
+            {
+                RutEmisor = "76269769-6"
+            };
+            var rut = "17096073-4";
+            //Act
+            var result = await _clientesService.ClientXRutAsync(request, rut);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Status, 200);
+            Assert.AreEqual(result.Message, "Clientes");
+            Assert.IsNotNull(result.Data);
+            Assert.IsNull(result.Errors);
+        }
+        [TestMethod]
+        public async Task ClientXRutAsync_ReturnsError_WhenApiCallIsFail()
+        {
+            //Arrange
+            var request = new Credenciales
+            {
+                //RutEmisor = "76269769-6"
+            };
+            var rut = "17096073-4";
+            //Act
+            var result = await _clientesService.ClientXRutAsync(request, rut);
+            //Assert
+            Assert.IsNotNull(result);
+            var response = JsonConvert.DeserializeObject<Response<bool>>(result.Message);
+            Assert.AreEqual(response.Status, 400);
+            Assert.IsNull(response.Message);
+            Assert.IsFalse(response.Data);
+            CollectionAssert.Contains(response.Errors, "Rut de emisor vacio");
+        }
     }
 }

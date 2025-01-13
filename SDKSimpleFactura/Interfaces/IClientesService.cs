@@ -10,5 +10,6 @@ namespace SDKSimpleFactura.Interfaces
     {
         Task<Response<List<ReceptorExternoEnt>>?> AgregarClientesAsync(DatoExternoRequest request);
         Task<Response<List<ReceptorExternoEnt>>?> ListarClientesAsync(Credenciales credenciales);
+        Task<Response<ReceptorEnt>> ClientXRutAsync(Credenciales credenciales, string rut);
     }
 }

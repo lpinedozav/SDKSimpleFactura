@@ -1314,6 +1314,53 @@ namespace SDKSimpleFacturaTests
             Assert.IsTrue(result.Message.Contains("Error al obtener trazas del documento emitido."));
             Assert.IsNull(result.Data);
         }
+        [TestMethod]
+        public async Task CederFacturaAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
+        {
+            //Arrange
+            var request = new CederFacturaRequest
+            {
+                RutCesionario = "17432554-5",
+                RutPersonaAutorizada = "17096073-4",
+                RutEmpresa = "76269769-6",
+                Folio = 2232,
+                CorreoDeudor = "correoCesionario@gmail.cl",
+                OtrasCondiciones = "otras"
+            };
+            //Act
+            var result = await _facturacionService.CederFacturaAsync(request);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Status, 200);
+            Assert.AreEqual(result.Message, "Cesión de DTE emitida con éxito");
+            Assert.IsNotNull(result.Data);
+            Assert.IsNull(result.Errors);
+        }
+        [TestMethod]
+        public async Task CederFacturaAsync_ReturnsBadRequest_WhenApiCallFails()
+        {
+            //Arrange
+            var request = new CederFacturaRequest
+            {
+                RutCesionario = "",
+                RutPersonaAutorizada = "17096073-4",
+                RutEmpresa = "76269769-6",
+                Folio = 2232,
+                CorreoDeudor = "correo@test.com",
+                OtrasCondiciones = "otras"
+            };
+            //Act
+            var result = await _facturacionService.CederFacturaAsync(request);
+            //Assert
+            Assert.IsNotNull(result);
+            var response = JsonConvert.DeserializeObject<Response<string>>(result.Message);
+            Assert.IsNotNull(response);
+            Assert.AreEqual(response.Status, 400);
+            Assert.AreEqual(response.Message, "Error al emitir la cesión de DTE");
+            Assert.IsNull(response.Data);
+            Assert.IsNotNull(response.Errors);
+            CollectionAssert.Contains(response.Errors, "No se encontró un cesionario asociado al RUT indicado.");
+        }
         private async Task<(bool success, int folio)> SolicitarFolio(DTEType tipo, int cantidad)
         {
             //probar

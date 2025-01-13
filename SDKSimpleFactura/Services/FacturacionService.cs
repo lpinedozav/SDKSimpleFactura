@@ -257,5 +257,20 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<string>> CederFacturaAsync(CederFacturaRequest request)
+        {
+            var url = "/cederFactura";
+            var result = await _apiService.PostAsync<CederFacturaRequest, Response<string>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<string>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
     }
 }
