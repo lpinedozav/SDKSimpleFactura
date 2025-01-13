@@ -51,6 +51,7 @@ namespace SDKSimpleFactura
             services.AddTransient<IFolioService, FolioService>();
             services.AddTransient<IConfiguracionService, ConfiguracionService>();
             services.AddTransient<IBoletasHonorariosService, BoletasHonorariosService>();
+            services.AddTransient<IUsuariosService, UsuariosService>();
             return services.BuildServiceProvider();
         }
     }

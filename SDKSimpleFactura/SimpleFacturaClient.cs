@@ -13,6 +13,7 @@ namespace SDKSimpleFactura
         public IFolioService Folio { get; }
         public IConfiguracionService Configuracion { get; }
         public IBoletasHonorariosService BoletasHonorarios { get; }
+        public IUsuariosService Usuarios { get; }
 
         public SimpleFacturaClient()
         {
@@ -26,6 +27,7 @@ namespace SDKSimpleFactura
             Folio = serviceProvider.GetRequiredService<IFolioService>();
             Configuracion = serviceProvider.GetRequiredService<IConfiguracionService>();
             BoletasHonorarios = serviceProvider.GetRequiredService<IBoletasHonorariosService>();
+            Usuarios = serviceProvider.GetRequiredService<IUsuariosService>();
         }
     }
 }

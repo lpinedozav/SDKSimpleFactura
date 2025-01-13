@@ -794,7 +794,7 @@ namespace SDKSimpleFacturaTests
                 NombreSucursal = "Casa Matriz"
             };
             var tempFilePath = Path.GetTempFileName();
-            var dataCsv = "Id;TipoDte;FmaPago;FechaEmision;Vencimiento;RutRecep;GiroRecep;Contacto;CorreoRecep;DirRecep;CmnaRecep;CiudadRecep;RazonSocialRecep;DirDest;CmnaDest;CiudadDest;ReferenciaTpoDocRef;ReferenciaFolioRef;ReferenciaFchRef;ReferenciaRazonRef;ReferenciaCodigo;CodigoProducto;NombreProducto;DescripcionProducto;CantidadProducto;PrecioProducto;UnidadMedidaProducto;DescuentoProducto;RecargoProducto;IndicadorExento;TotalProducto\r\n1;33;2;06-11-2024;06-12-2024;11111111-1;Reparación de vehículos;98765412;contacto@cliente.cl;Av. 21 de Mayo 547;Providencia;Santiago;Reparadora de vehículos SpA;Av. 21 de Mayo 547;Providencia;Santiago;;;;;;1347864355;REPUESTO DJ11-18;REPUESTO DJ11-18;61;99843;UN;0;0;0;6090423\r\n2;33;2;06-11-2024;06-12-2024;11111111-1;Reparación de vehículos;98765412;contacto@cliente.cl;Av. 21 de Mayo 547;Providencia;Santiago;Reparadora de vehículos SpA;Av. 21 de Mayo 547;Providencia;Santiago;;;;;;1795083977;REPUESTO WB45-469;REPUESTO WB45-469;51;90843;UN;0;0;0;4632993\r\n";
+            var dataCsv = "Id;TipoDte;FmaPago;FechaEmision;Vencimiento;RutRecep;GiroRecep;Contacto;CorreoRecep;DirRecep;CmnaRecep;CiudadRecep;RazonSocialRecep;DirDest;CmnaDest;CiudadDest;ReferenciaTpoDocRef;ReferenciaFolioRef;ReferenciaFchRef;ReferenciaRazonRef;ReferenciaCodigo;CodigoProducto;NombreProducto;DescripcionProducto;CantidadProducto;PrecioProducto;UnidadMedidaProducto;DescuentoProducto;RecargoProducto;IndicadorExento;TotalProducto\r\n1;33;2;06-11-2024;06-12-2024;27808803-0;Reparación de vehículos;98765412;contacto@cliente.cl;Av. 21 de Mayo 547;Providencia;Santiago;Reparadora de vehículos SpA;Av. 21 de Mayo 547;Providencia;Santiago;;;;;;1347864355;REPUESTO DJ11-18;REPUESTO DJ11-18;61;99843;UN;0;0;0;6090423\r\n2;33;2;06-11-2024;06-12-2024;27808803-0;Reparación de vehículos;98765412;contacto@cliente.cl;Av. 21 de Mayo 547;Providencia;Santiago;Reparadora de vehículos SpA;Av. 21 de Mayo 547;Providencia;Santiago;;;;;;1795083977;REPUESTO WB45-469;REPUESTO WB45-469;51;90843;UN;0;0;0;4632993\r\n";
             File.WriteAllText(tempFilePath, dataCsv);
             // Act
             var result = await _facturacionService.FacturacionMasivaAsync(credenciales, tempFilePath);
@@ -1237,7 +1237,7 @@ namespace SDKSimpleFacturaTests
                 RutEmisor = "76269769-6"
             };
             //Act
-            var result = await _facturacionService.ConciliarEmitidosAsync(credencialesConsolidado,5,2024);
+            var result = await _facturacionService.ConciliarEmitidosAsync(credencialesConsolidado,8,2024);
             //Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Status, 200);
@@ -1313,6 +1313,53 @@ namespace SDKSimpleFacturaTests
             Assert.IsNotNull(result.Message);
             Assert.IsTrue(result.Message.Contains("Error al obtener trazas del documento emitido."));
             Assert.IsNull(result.Data);
+        }
+        [TestMethod]
+        public async Task CederFacturaAsync_ReturnsOkResult_WhenApiCallIsSuccessfully()
+        {
+            //Arrange
+            var request = new CederFacturaRequest
+            {
+                RutCesionario = "17432554-5",
+                RutPersonaAutorizada = "17096073-4",
+                RutEmpresa = "76269769-6",
+                Folio = 2232,
+                CorreoDeudor = "correoCesionario@gmail.cl",
+                OtrasCondiciones = "otras"
+            };
+            //Act
+            var result = await _facturacionService.CederFacturaAsync(request);
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result.Status, 200);
+            Assert.AreEqual(result.Message, "Cesión de DTE emitida con éxito");
+            Assert.IsNotNull(result.Data);
+            Assert.IsNull(result.Errors);
+        }
+        [TestMethod]
+        public async Task CederFacturaAsync_ReturnsBadRequest_WhenApiCallFails()
+        {
+            //Arrange
+            var request = new CederFacturaRequest
+            {
+                RutCesionario = "",
+                RutPersonaAutorizada = "17096073-4",
+                RutEmpresa = "76269769-6",
+                Folio = 2232,
+                CorreoDeudor = "correo@test.com",
+                OtrasCondiciones = "otras"
+            };
+            //Act
+            var result = await _facturacionService.CederFacturaAsync(request);
+            //Assert
+            Assert.IsNotNull(result);
+            var response = JsonConvert.DeserializeObject<Response<string>>(result.Message);
+            Assert.IsNotNull(response);
+            Assert.AreEqual(response.Status, 400);
+            Assert.AreEqual(response.Message, "Error al emitir la cesión de DTE");
+            Assert.IsNull(response.Data);
+            Assert.IsNotNull(response.Errors);
+            CollectionAssert.Contains(response.Errors, "No se encontró un cesionario asociado al RUT indicado.");
         }
         private async Task<(bool success, int folio)> SolicitarFolio(DTEType tipo, int cantidad)
         {

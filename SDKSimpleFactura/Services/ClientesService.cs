@@ -43,5 +43,20 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<ReceptorEnt>> ClientXRutAsync(Credenciales credenciales, string rut)
+        {
+            var url = $"/clients/{rut}";
+            var result = await _apiService.PostAsync<Credenciales, Response<ReceptorEnt>>(url, credenciales);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<ReceptorEnt>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
     }
 }
