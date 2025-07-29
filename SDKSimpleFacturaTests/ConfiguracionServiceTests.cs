@@ -3,6 +3,7 @@ using SDKSimpleFactura;
 using SDKSimpleFactura.Models.Facturacion;
 using Newtonsoft.Json;
 using SDKSimpleFactura.Models.Response;
+using SDKSimpleFacturaTests.Utilidades;
 
 namespace SDKSimpleFacturaTests
 {
@@ -14,7 +15,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            _simpleFacturaClient = new SimpleFacturaClient();
+            var serviceProvider = TestDependencyInjectionConfig.ConfigureTestServices();
+            _simpleFacturaClient = new SimpleFacturaClient(serviceProvider);
             _configuracionService = _simpleFacturaClient.Configuracion;
         }
         [TestMethod]

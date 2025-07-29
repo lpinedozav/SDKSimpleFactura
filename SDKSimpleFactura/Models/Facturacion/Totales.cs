@@ -16,13 +16,13 @@ namespace SDKSimpleFactura.Models.Facturacion
         /// Suma de valores total de ítems afectos - descuentos globales + recargos globales (Asignados a ítems afectos).
         /// Si está encendido el Indicador de Montos Brutos (=1) entonces el resultado anterior se debe dividir por (1 + tasa de IVA).
         /// </summary>
-        public double MntNeto { get; set; }
+        public long MntNeto { get; set; }
 
         /// <summary>
         /// Monto exento del DTE.
         /// Suma de valores total de ítems no afectos o exentos - descuentos globales + recargos globales (Asignados a ítems exentos o no afectos).
         /// </summary>
-        public double MntExe { get; set; }
+        public long MntExe { get; set; }
 
         /// <summary>
         /// Monto base faenamiento de carne.
@@ -102,7 +102,7 @@ namespace SDKSimpleFactura.Models.Facturacion
         /// (Los Impuestos Adicionales y el IVA Anticipado están detallados en la TABLA de Impuestos Adicionales y Retenciones).
         /// En Documentos de exportación es “0” (cero) si forma de pago es = 21 (Sin pago).
         /// </summary>
-        public double MntTotal { get; set; }
+        public long MntTotal { get; set; }
 
         /// <summary>
         /// Monto no facturable. 

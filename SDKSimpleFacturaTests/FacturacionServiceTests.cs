@@ -5,6 +5,7 @@ using SDKSimpleFactura.Interfaces;
 using SDKSimpleFactura.Models.Facturacion;
 using SDKSimpleFactura.Models.Request;
 using SDKSimpleFactura.Models.Response;
+using SDKSimpleFacturaTests.Utilidades;
 using static SDKSimpleFactura.Enum.FormaPago;
 using static SDKSimpleFactura.Enum.TipoDTE;
 
@@ -20,7 +21,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            _simpleFacturaClient = new SimpleFacturaClient();
+            var serviceProvider = TestDependencyInjectionConfig.ConfigureTestServices();
+            _simpleFacturaClient = new SimpleFacturaClient(serviceProvider);
             _folioService = _simpleFacturaClient.Folio;
             _facturacionService = _simpleFacturaClient.Facturacion;
         }
@@ -276,7 +278,7 @@ namespace SDKSimpleFacturaTests
             Assert.IsNotNull(result.Data);
             Assert.AreEqual(12553, result.Data.Folio);
             Assert.AreEqual("Certificación", result.Data.Ambiente);
-            Assert.AreEqual("Cliente en Marketplace", result.Data.RazonSocialReceptor);
+            Assert.AreEqual("Cliente sin identificar", result.Data.RazonSocialReceptor);
             Assert.AreEqual("66666666-6", result.Data.RutReceptor);
             Assert.AreEqual(990, result.Data.Total);
             Assert.AreEqual(1, result.Data.Detalles.Count);
@@ -887,10 +889,10 @@ namespace SDKSimpleFacturaTests
                                     },
                                     Totales = new Totales
                                     {
-                                        MntNeto = 6930000.0,
+                                        MntNeto = 6930000,
                                         TasaIVA = 19,
                                         IVA = 1316700,
-                                        MntTotal = 8246700.0
+                                        MntTotal = 8246700
                                     }
                                 },
                                 Detalle = new List<Detalle>
@@ -1010,10 +1012,10 @@ namespace SDKSimpleFacturaTests
                         },
                         Totales = new Totales
                         {
-                            MntNeto = 6930000.0,
+                            MntNeto = 6930000,
                             TasaIVA = 19,
                             IVA = 1316700,
-                            MntTotal = 8246700.0
+                            MntTotal = 8246700
                         }
                     },
                     Detalle = new List<Detalle>

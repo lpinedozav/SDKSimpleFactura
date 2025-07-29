@@ -27,13 +27,25 @@ namespace SDKSimpleFactura.Services
 
         public async Task<string> GetTokenAsync()
         {
-            if (string.IsNullOrEmpty(_accessToken) || DateTime.UtcNow >= _expiresAt)
+            var currentDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow,
+                TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
+            if (string.IsNullOrEmpty(_accessToken) || currentDate >= _expiresAt)
             {
                 await _semaphore.WaitAsync();
                 try
                 {
-                    if (string.IsNullOrEmpty(_accessToken) || DateTime.UtcNow >= _expiresAt)
+                    if (string.IsNullOrEmpty(_accessToken) || currentDate >= _expiresAt)
                     {
+                        var configToken = _configuration["SDKSettings:AccessToken"];
+                        var configExpiresRaw = _configuration["SDKSettings:ExpiresAt"];
+                        var configExpiresAt = DateTime.TryParse(configExpiresRaw, out var parsedDate) ? parsedDate : DateTime.MinValue;
+
+                        if (!string.IsNullOrEmpty(configToken) && currentDate < configExpiresAt)
+                        {
+                            _accessToken = configToken;
+                            _expiresAt = configExpiresAt;
+                            return _accessToken;
+                        }
                         var tokenEndpoint = "/token";
                         var email = _configuration["SDKSettings:Username"];
                         var password = _configuration["SDKSettings:Password"];
@@ -51,7 +63,7 @@ namespace SDKSimpleFactura.Services
                         {
                             var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseContent);
                             _accessToken = tokenResponse.AccessToken;
-                            _expiresAt = tokenResponse.ExpiresAt.ToUniversalTime();
+                            _expiresAt = tokenResponse.ExpiresAt;
                         }
                         else
                         {

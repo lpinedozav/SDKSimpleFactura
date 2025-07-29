@@ -20,7 +20,8 @@ namespace SDKSimpleFacturaTests
         private HttpClient _httpClient;
         private IConfiguration _configuration;
         private AuthenticationService _authenticationService;
-
+        private DateTime currentDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow,
+                TimeZoneInfo.FindSystemTimeZoneById("Pacific SA Standard Time"));
         [TestInitialize]
         public void Setup()
         {
@@ -108,13 +109,13 @@ namespace SDKSimpleFacturaTests
             var initialTokenResponse = new TokenResponse
             {
                 AccessToken = initialToken,
-                ExpiresAt = DateTime.UtcNow.AddSeconds(1)
+                ExpiresAt = currentDate.AddSeconds(1)
             };
 
             var newTokenResponse = new TokenResponse
             {
                 AccessToken = newToken,
-                ExpiresAt = DateTime.UtcNow.AddHours(24)
+                ExpiresAt = currentDate.AddHours(24)
             };
 
             // Configurar el mock para devolver el initialTokenResponse en la primera llamada y newTokenResponse en la segunda
@@ -142,7 +143,7 @@ namespace SDKSimpleFacturaTests
             var token1 = await _authenticationService.GetTokenAsync();
 
             // Esperar a que el token expire
-            await Task.Delay(1500);
+            await Task.Delay(3500);
 
             var token2 = await _authenticationService.GetTokenAsync();
 

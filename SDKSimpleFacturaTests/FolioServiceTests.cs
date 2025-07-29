@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using SDKSimpleFactura.Models.Facturacion;
 using static SDKSimpleFactura.Enum.TipoDTE;
 using SDKSimpleFactura.Models.Response;
+using SDKSimpleFacturaTests.Utilidades;
 
 namespace SDKSimpleFacturaTests
 {
@@ -17,7 +18,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            _simpleFacturaClient = new SimpleFacturaClient();
+            var serviceProvider = TestDependencyInjectionConfig.ConfigureTestServices();
+            _simpleFacturaClient = new SimpleFacturaClient(serviceProvider);
             _folioService = _simpleFacturaClient.Folio;
         }
         [TestMethod]

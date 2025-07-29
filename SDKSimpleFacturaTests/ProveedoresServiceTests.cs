@@ -7,6 +7,7 @@ using SDKSimpleFactura;
 using static SDKSimpleFactura.Enum.TipoDTE;
 using SDKSimpleFactura.Models.Response;
 using SDKSimpleFactura.Services;
+using SDKSimpleFacturaTests.Utilidades;
 namespace SDKSimpleFacturaTests
 {
     [TestClass]
@@ -17,7 +18,8 @@ namespace SDKSimpleFacturaTests
         [TestInitialize]
         public void Setup()
         {
-            _simpleFacturaClient = new SimpleFacturaClient();
+            var serviceProvider = TestDependencyInjectionConfig.ConfigureTestServices();
+            _simpleFacturaClient = new SimpleFacturaClient(serviceProvider);
             _proveedoresService = _simpleFacturaClient.Proveedores;
         }
         [TestMethod]

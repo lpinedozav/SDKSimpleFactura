@@ -15,19 +15,19 @@ namespace SDKSimpleFactura
         public IBoletasHonorariosService BoletasHonorarios { get; }
         public IUsuariosService Usuarios { get; }
 
-        public SimpleFacturaClient()
+        public SimpleFacturaClient(ServiceProvider? serviceProvider = null) //Parametro para tests, NO ENVIAR EN PRODUCCION
         {
-            var serviceProvider = DependencyInjectionConfig.ConfigureServices();
+            var provider = serviceProvider ?? DependencyInjectionConfig.ConfigureServices();
 
-            Facturacion = serviceProvider.GetRequiredService<IFacturacionService>();
-            Productos = serviceProvider.GetRequiredService<IProductosService>();
-            Proveedores = serviceProvider.GetRequiredService<IProveedoresService>();
-            Clientes = serviceProvider.GetRequiredService<IClientesService>();
-            Sucursal = serviceProvider.GetRequiredService<ISucursalService>();
-            Folio = serviceProvider.GetRequiredService<IFolioService>();
-            Configuracion = serviceProvider.GetRequiredService<IConfiguracionService>();
-            BoletasHonorarios = serviceProvider.GetRequiredService<IBoletasHonorariosService>();
-            Usuarios = serviceProvider.GetRequiredService<IUsuariosService>();
+            Facturacion = provider.GetRequiredService<IFacturacionService>();
+            Productos = provider.GetRequiredService<IProductosService>();
+            Proveedores = provider.GetRequiredService<IProveedoresService>();
+            Clientes = provider.GetRequiredService<IClientesService>();
+            Sucursal = provider.GetRequiredService<ISucursalService>();
+            Folio = provider.GetRequiredService<IFolioService>();
+            Configuracion = provider.GetRequiredService<IConfiguracionService>();
+            BoletasHonorarios = provider.GetRequiredService<IBoletasHonorariosService>();
+            Usuarios = provider.GetRequiredService<IUsuariosService>();
         }
     }
 }
