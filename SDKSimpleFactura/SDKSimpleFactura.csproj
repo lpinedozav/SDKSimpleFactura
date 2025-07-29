@@ -5,7 +5,9 @@
     <Nullable>enable</Nullable>
 	  <LangVersion>8.0</LangVersion>
 	  <PackageId>SDKSimpleFactura</PackageId>
-	  <Version>1.0.7</Version>
+	  <Version>1.0.8</Version>
+	  <AssemblyVersion>1.0.8.0</AssemblyVersion>
+	  <FileVersion>1.0.8.0</FileVersion>
 	  <Authors>Luis Pinedo Zavala</Authors>
 	  <Company>ChileSystems</Company>
 	  <Description>SDK para integración con SimpleFactura desarrollado para ChileSystems.</Description>
