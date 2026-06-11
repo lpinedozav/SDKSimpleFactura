@@ -7,6 +7,7 @@ namespace SDKSimpleFactura.Models.Request
     {
         public Documento? Documento { get; set; }
         public Exportaciones? Exportaciones { get; set; }
+        public Liquidacion? Liquidacion { get; set; }
         public string? Observaciones { get; set; }
         public string? Cajero { get; set; }
         public string? TipoPago { get; set; }
@@ -26,7 +27,7 @@ namespace SDKSimpleFactura.Models.Request
             //Para boletas electrónicas
             if (tipo == TipoDTE.DTEType.BoletaElectronica || tipo == TipoDTE.DTEType.BoletaElectronicaExenta)
             {
-                Documento.Encabezado.IdDoc.IndServicio = IndicadorServicio.IndicadorServicioEnum.BoletaVentasYServicios;
+                Documento.Encabezado.IdDoc.IndServicioBoleta = IndicadorServicio.IndicadorServicioBoletaEnum.BoletaVentasYServicios;
             }
         }
 

@@ -57,7 +57,7 @@ namespace SDKSimpleFactura.Models.Facturacion
         /// <summary>
         /// tabla de líneas de detalle que se agrupan en el subtotal.
         /// </summary>
-        public List<int> LineasDeta { get; set; }
+        public List<int>? LineasDeta { get; set; }
 
         public SubTotal()
         {

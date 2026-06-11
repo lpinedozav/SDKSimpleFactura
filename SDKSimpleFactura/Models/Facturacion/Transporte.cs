@@ -1,4 +1,6 @@
 ﻿using SDKSimpleFactura.Helpers;
+using System;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace SDKSimpleFactura.Models.Facturacion
@@ -15,6 +17,12 @@ namespace SDKSimpleFactura.Models.Facturacion
         /// Patente del vehículo que trasnporta los bienes.
         /// </summary>
         public string? Patente { get { return _patente.Truncate(8); } set { _patente = value; } }
+
+        private string? _patenteCarro;
+        /// <summary>
+        /// Patente del carro o remolque.
+        /// </summary>
+        public string? PatenteCarro { get { return _patenteCarro?.Truncate(8); } set { _patenteCarro = value; } }
 
         /// <summary>
         /// Rut del transportista.
@@ -52,6 +60,57 @@ namespace SDKSimpleFactura.Models.Facturacion
         /// </summary>
         public Aduana? Aduana { get; set; }
 
+        /// <summary>
+        /// Fecha de salida (AAAA-MM-DD).
+        /// Do not set this property, set FchSalida instead.
+        /// </summary>
+        public string? FechaSalidaString { get; set; }
+        public bool ShouldSerializeFechaSalidaString() { return FchSalida != DateTime.MinValue; }
+        /// <summary>
+        /// Fecha de salida.
+        /// </summary>
+        public DateTime FchSalida
+        {
+            get { return string.IsNullOrEmpty(FechaSalidaString) ? DateTime.MinValue : DateTime.Parse(FechaSalidaString, CultureInfo.InvariantCulture); }
+            set { FechaSalidaString = value == DateTime.MinValue ? null : value.ToString("yyyy-MM-dd"); }
+        }
+
+        /// <summary>
+        /// Hora de salida (hh:mm:ss).
+        /// Do not set this property, set HraSalida instead.
+        /// </summary>
+        public string? HoraSalidaString { get; set; }
+        public bool ShouldSerializeHoraSalidaString() { return HraSalida != TimeSpan.Zero; }
+        /// <summary>
+        /// Hora de salida.
+        /// </summary>
+        public TimeSpan HraSalida
+        {
+            get { return string.IsNullOrEmpty(HoraSalidaString) ? TimeSpan.Zero : TimeSpan.Parse(HoraSalidaString, CultureInfo.InvariantCulture); }
+            set { HoraSalidaString = value == TimeSpan.Zero ? null : value.ToString(@"hh\:mm\:ss"); }
+        }
+
+        /// <summary>
+        /// Fecha de llegada (AAAA-MM-DD).
+        /// Do not set this property, set FchLlegada instead.
+        /// </summary>
+        public string? FechaLlegadaString { get; set; }
+        public bool ShouldSerializeFechaLlegadaString() { return FchLlegada != DateTime.MinValue; }
+        /// <summary>
+        /// Fecha de llegada.
+        /// </summary>
+        public DateTime FchLlegada
+        {
+            get { return string.IsNullOrEmpty(FechaLlegadaString) ? DateTime.MinValue : DateTime.Parse(FechaLlegadaString, CultureInfo.InvariantCulture); }
+            set { FechaLlegadaString = value == DateTime.MinValue ? null : value.ToString("yyyy-MM-dd"); }
+        }
+
+        public Transporte()
+        {
+            FchSalida = DateTime.MinValue;
+            HraSalida = TimeSpan.Zero;
+            FchLlegada = DateTime.MinValue;
+        }
     }
 
 }

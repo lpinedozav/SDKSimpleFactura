@@ -18,5 +18,10 @@ namespace SDKSimpleFactura.Models.Request
         public DateTime? Hasta { get; set; }
         public TipoSalida Salida { get; set; }
         public string? RutEmisor { get; set; }
+        public string? RutReceptor { get; set; }
+        /// <summary>
+        /// Filtra documentos según si han sido cedidos o no (opcional).
+        /// </summary>
+        public bool? Cedida { get; set; }
     }
 }

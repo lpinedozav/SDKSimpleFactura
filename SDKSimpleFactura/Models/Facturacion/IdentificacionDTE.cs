@@ -59,10 +59,20 @@ namespace SDKSimpleFactura.Models.Facturacion
         public Enum.IndicadorServicio.IndicadorServicioEnum IndServicio { get; set; }
 
         /// <summary>
+        /// Indica si la transacción corresponde a la prestación de un servicio (sólo boletas electrónicas)
+        /// </summary>
+        public Enum.IndicadorServicio.IndicadorServicioBoletaEnum IndServicioBoleta { get; set; }
+
+        /// <summary>
         /// Indica si las líneas de detalle, descuentos y recargos se expresan en montos brutos. (Sólo para documentos sin impuestos adicionales).
         /// 1: Montos de líneas de detalle vienen expresados en montos brutos.
         /// </summary>
         public int MntBruto { get; set; }
+
+        /// <summary>
+        /// Tipo de transacción de venta.
+        /// </summary>
+        public Enum.TipoTransVenta TpoTranVenta { get; set; }
         /// <summary>
         /// Indica en qué forma se pagará. En el caso de una Factura por “Entrega Gratuita”, se debe indicar el 3. Una Factura de este tipo no tiene derecho a crédito fiscal.
         /// </summary>
@@ -129,9 +139,20 @@ namespace SDKSimpleFactura.Models.Facturacion
         public DateTime PeriodoHasta { get { return DateTime.Parse(PeriodoHastaString); } set { this.PeriodoHastaString = value.ToString("yyyy-MM-dd"); } }
 
         /// <summary>
-        /// Indica en qué modalidad se pagará.
+        /// Indica en qué modalidad se pagará (sólo boletas electrónicas).
         /// </summary>
-        public Enum.MedioPago.MedioPagoEnum MedioPago { get; set; }
+        public Enum.MedioPago.MedioPagoBoletaEnum MedioPagoBoleta { get; set; }
+
+        /// <summary>
+        /// Indica en qué modalidad se pagará (facturas y otros DTE).
+        /// </summary>
+        public Enum.MedioPago.MedioPagoEnum MedioPagoDTE { get; set; }
+
+        /// <summary>
+        /// Propiedad unificada para medio de pago.
+        /// El backend la convierte automáticamente al tipo correcto según el tipo de DTE.
+        /// </summary>
+        public int? MedioPago { get; set; }
 
         /// <summary>
         /// Tipo de cuenta de pago.
@@ -182,8 +203,9 @@ namespace SDKSimpleFactura.Models.Facturacion
         public int IndMntNeto { get; set; }
         public IdentificacionDTE()
         {
-            // IndicadorServicioBoleta = Enum.IndicadorServicio.IndicadorServicioBoletaEnum.NotSet;
+            IndServicioBoleta = Enum.IndicadorServicio.IndicadorServicioBoletaEnum.NotSet;
             IndServicio = Enum.IndicadorServicio.IndicadorServicioEnum.NotSet;
+            TpoTranVenta = Enum.TipoTransVenta.NotSet;
             IndNoRebaja = 0;
             TipoDespacho = Enum.TipoDespacho.TipoDespachoEnum.NotSet;
             IndTraslado = Enum.TipoTraslado.TipoTrasladoEnum.NotSet;
@@ -197,7 +219,8 @@ namespace SDKSimpleFactura.Models.Facturacion
             MntPagos = new List<MontoPagoItem>();
             PeriodoDesde = DateTime.MinValue;
             PeriodoHasta = DateTime.MinValue;
-            MedioPago = Enum.MedioPago.MedioPagoEnum.NotSet;
+            MedioPagoBoleta = Enum.MedioPago.MedioPagoBoletaEnum.NotSet;
+            MedioPagoDTE = Enum.MedioPago.MedioPagoEnum.NotSet;
             TpoCtaPago = Enum.TipoCuentaPago.TipoCuentaPagoEnum.NotSet;
             NumCtaPago = string.Empty;
             BcoPago = string.Empty;
