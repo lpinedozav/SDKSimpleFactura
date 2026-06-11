@@ -14,6 +14,9 @@ namespace SDKSimpleFactura
         public IConfiguracionService Configuracion { get; }
         public IBoletasHonorariosService BoletasHonorarios { get; }
         public IUsuariosService Usuarios { get; }
+        public ICesionesService Cesiones { get; }
+        public IPaykuService Payku { get; }
+        public IPartnersService Partners { get; }
 
         public SimpleFacturaClient(ServiceProvider? serviceProvider = null) //Parametro para tests, NO ENVIAR EN PRODUCCION
         {
@@ -28,6 +31,9 @@ namespace SDKSimpleFactura
             Configuracion = provider.GetRequiredService<IConfiguracionService>();
             BoletasHonorarios = provider.GetRequiredService<IBoletasHonorariosService>();
             Usuarios = provider.GetRequiredService<IUsuariosService>();
+            Cesiones = provider.GetRequiredService<ICesionesService>();
+            Payku = provider.GetRequiredService<IPaykuService>();
+            Partners = provider.GetRequiredService<IPartnersService>();
         }
     }
 }
