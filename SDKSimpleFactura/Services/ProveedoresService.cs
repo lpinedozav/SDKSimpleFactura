@@ -108,5 +108,20 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<bool>?> ActualizarListaProveedorAsync(ListaProveedorRequest request)
+        {
+            var url = "/proveedor/update-lista";
+            var result = await _apiService.PostAsync<ListaProveedorRequest, Response<bool>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<bool>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = false
+            };
+        }
     }
 }

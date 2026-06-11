@@ -68,6 +68,31 @@ namespace SDKSimpleFactura.Services
                 };
             }
         }
+        public async Task<ApiResponse<TResponse>> GetAsync<TResponse>(string url)
+        {
+            var response = await _httpClient.GetAsync(url);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = JsonConvert.DeserializeObject<TResponse>(responseContent);
+                return new ApiResponse<TResponse>
+                {
+                    IsSuccess = true,
+                    Data = result
+                };
+            }
+            else
+            {
+                string? errorMessage = responseContent;
+                return new ApiResponse<TResponse>
+                {
+                    IsSuccess = false,
+                    StatusCode = (int)response.StatusCode,
+                    Errores = errorMessage
+                };
+            }
+        }
         public async Task<ApiResponse<TResponse>> PostMultipartAsync<TResponse>(string url, MultipartFormDataContent content)
         {
             var response = await _httpClient.PostAsync(url, content);

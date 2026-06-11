@@ -11,5 +11,6 @@ namespace SDKSimpleFactura.Interfaces
         Task<Response<TimbrajeApiEnt>?> SolicitarFoliosAsync(FolioRequest request);
         Task<Response<List<TimbrajeApiEnt>>?> ConsultarFoliosAsync(FolioRequest request);
         Task<Response<List<FoliosAnulablesEnt>>?> FoliosSinUsoAsync(SolicitudFoliosRequest request);
+        Task<Response<bool>?> AnularFoliosAsync(AnularFoliosRequest request);
     }
 }

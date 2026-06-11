@@ -15,6 +15,12 @@ namespace SDKSimpleFactura.Interfaces
         Task<Response<DteEnt>> ObtenerDteAsync(SolicitudDte solicitud);
         Task<Response<byte[]>> ObtenerSobreXmlDteAsync(SolicitudDte solicitud, TipoSobreEnvio tipoSobre);
         Task<Response<InvoiceData>> FacturacionIndividualV2DTEAsync(string sucursal, RequestDTE request);
+        Task<Response<InvoiceData>> FacturacionIndividualV2DTEAsync(string sucursal, RequestDTE request, bool validaMontos);
+        Task<Response<InvoiceData>> EmitirLiquidacionAsync(string sucursal, RequestDTE request);
+        Task<Response<bool>> ReenviarSiiAsync(ReenvioSiiRequest request);
+        Task<Response<bool>> AnularGuiaAsync(AnularGuiaRequest request);
+        Task<Response<byte[]>> PreviewDteAsync(string sucursal, RequestDTE request);
+        Task<Response<bool>> MarcarPagadoOPendienteAsync(MarcarPagadoOPendienteRequest request);
         Task<Response<InvoiceData>> FacturacionIndividualV2ExportacionAsync(string sucursal, RequestDTE request);
         Task<Response<bool>> FacturacionMasivaAsync(Credenciales credenciales, string pathCsv);
         Task<Response<InvoiceData>> EmisionNC_NDV2Async(string sucursal, ReasonTypeEnum motivo, RequestDTE request);

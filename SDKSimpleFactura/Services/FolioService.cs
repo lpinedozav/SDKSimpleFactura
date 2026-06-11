@@ -73,5 +73,20 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<bool>?> AnularFoliosAsync(AnularFoliosRequest request)
+        {
+            var url = "/folios/anular";
+            var result = await _apiService.PostAsync<AnularFoliosRequest, Response<bool>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<bool>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = false
+            };
+        }
     }
 }

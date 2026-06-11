@@ -58,5 +58,35 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<List<ReceptorExternoEnt>>?> EditarClientesAsync(EditarClienteRequest request)
+        {
+            var url = "/editClients";
+            var result = await _apiService.PostAsync<EditarClienteRequest, Response<List<ReceptorExternoEnt>>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<List<ReceptorExternoEnt>>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
+        public async Task<Response<ContribuyenteSiiEnt>?> ObtenerContribuyenteSiiAsync(Credenciales credenciales, string rut)
+        {
+            var url = $"/contribuyentes/correo-intercambio/{rut}";
+            var result = await _apiService.PostAsync<Credenciales, Response<ContribuyenteSiiEnt>>(url, credenciales);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<ContribuyenteSiiEnt>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
     }
 }

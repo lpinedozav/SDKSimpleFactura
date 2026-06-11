@@ -123,6 +123,100 @@ namespace SDKSimpleFactura.Services
                 Data = null
             };
         }
+        public async Task<Response<InvoiceData>?> FacturacionIndividualV2DTEAsync(string sucursal, RequestDTE request, bool validaMontos)
+        {
+            var url = $"/invoiceV2/{sucursal}?validaMontos={validaMontos}";
+            var result = await _apiService.PostAsync<RequestDTE, Response<InvoiceData>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<InvoiceData>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
+        public async Task<Response<InvoiceData>?> EmitirLiquidacionAsync(string sucursal, RequestDTE request)
+        {
+            var url = $"/liquidacion/{sucursal}";
+            var result = await _apiService.PostAsync<RequestDTE, Response<InvoiceData>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<InvoiceData>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
+        public async Task<Response<bool>?> ReenviarSiiAsync(ReenvioSiiRequest request)
+        {
+            var url = "/dte/reenviar-sii";
+            var result = await _apiService.PostAsync<ReenvioSiiRequest, Response<bool>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<bool>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = false
+            };
+        }
+        public async Task<Response<bool>?> AnularGuiaAsync(AnularGuiaRequest request)
+        {
+            var url = "/dte/anularGuia";
+            var result = await _apiService.PostAsync<AnularGuiaRequest, Response<bool>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<bool>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = false
+            };
+        }
+        public async Task<Response<byte[]>> PreviewDteAsync(string sucursal, RequestDTE request)
+        {
+            var url = $"/dte/preview/{sucursal}";
+            var result = await _apiService.PostForByteArrayAsync<RequestDTE>(url, request);
+            if (result.IsSuccess)
+            {
+                return new Response<byte[]>
+                {
+                    Status = 200,
+                    Data = result.Data
+                };
+            }
+            return new Response<byte[]>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = null
+            };
+        }
+        public async Task<Response<bool>?> MarcarPagadoOPendienteAsync(MarcarPagadoOPendienteRequest request)
+        {
+            var url = "/dte/marcar-pagado-pendiente";
+            var result = await _apiService.PostAsync<MarcarPagadoOPendienteRequest, Response<bool>>(url, request);
+            if (result.IsSuccess)
+            {
+                return result.Data;
+            }
+            return new Response<bool>
+            {
+                Status = result.StatusCode,
+                Message = result.Errores,
+                Data = false
+            };
+        }
         public async Task<Response<InvoiceData>?> FacturacionIndividualV2ExportacionAsync(string sucursal, RequestDTE request)
         {
             var url = $"/dte/exportacion/{sucursal}";

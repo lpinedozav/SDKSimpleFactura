@@ -9,6 +9,7 @@ namespace SDKSimpleFactura.Interfaces
         Task<ApiResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest request);
         Task<ApiResponse<byte[]>> PostForByteArrayAsync<TRequest>(string url, TRequest request);
         Task<ApiResponse<TResponse>> PostMultipartAsync<TResponse>(string url, MultipartFormDataContent content);
+        Task<ApiResponse<TResponse>> GetAsync<TResponse>(string url);
     }
 
 }
