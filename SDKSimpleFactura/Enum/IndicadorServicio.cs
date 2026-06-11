@@ -62,19 +62,19 @@ namespace SDKSimpleFactura.Enum
             BoletaEspectaculosPorTerceros = 4
         }
 
-        //public enum IndicadorServicioBoletaEnum : int
-        //{
-        //    [XmlEnum("")]
-        //    NotSet = 0,
-        //    [XmlEnum("1")]
-        //    BoletaServiciosPeriodicos = 1,
-        //    [XmlEnum("2")]
-        //    BoletaServiciosPeriodicosDomiciliarios = 2,
-        //    [XmlEnum("3")]
-        //    BoletaVentasYServicios = 3,
-        //    [XmlEnum("4")]
-        //    BoletaEspectaculosPorTerceros = 4
-        //}
+        public enum IndicadorServicioBoletaEnum : int
+        {
+            [XmlEnum("")]
+            NotSet = 0,
+            [XmlEnum("1")]
+            BoletaServiciosPeriodicos = 1,
+            [XmlEnum("2")]
+            BoletaServiciosPeriodicosDomiciliarios = 2,
+            [XmlEnum("3")]
+            BoletaVentasYServicios = 3,
+            [XmlEnum("4")]
+            BoletaEspectaculosPorTerceros = 4
+        }
 
         /// <summary>
         /// Indica si la transacción corresponde a la prestación de un servicio
